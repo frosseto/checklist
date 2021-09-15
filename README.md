@@ -47,14 +47,14 @@ SSH - github
 Alterar branch
 > git checkout -b main
 
-Adicionar arquivo ao repositorio
+Adicionar arquivo ao repositorio ou para atualizacao
 > git add
 
 Commit
 > git commit -m "DESCRIBE COMMIT IN A FEW WORDS"
 
-Push
-> git push -u origin master
+Push - efetivar as mudanças no servidor git
+> git push
 
 Pull (Pull, fetch)
 > git pull
