@@ -10,6 +10,8 @@ Ativar ambiente
 > (win) ./venv/scripts/activate.bat
 
 Instalar pacotes
+> pip install -r requirements.txt
+ou individualmente
 > pip install Django
 > 
 > pip install django-widget-tweaks
@@ -44,3 +46,15 @@ SSH - github
 
 Alterar branch
 > git checkout -b main
+
+Adicionar arquivo ao repositorio
+> git add
+
+Commit
+> git commit -m "DESCRIBE COMMIT IN A FEW WORDS"
+
+Push
+> git push -u origin master
+
+Pull
+> git pull
