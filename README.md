@@ -56,5 +56,5 @@ Commit
 Push
 > git push -u origin master
 
-Pull
+Pull (Pull, fetch)
 > git pull
