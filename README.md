@@ -44,16 +44,24 @@ SSH - github
 
 > https://gist.github.com/xirixiz/b6b0c6f4917ce17a90e00f9b60566278
 
+GIT
+-
+Criar novo repositorio
+>  git init
+
+Exibir status dos arquivos alterados
+> git status
+
 Alterar branch
 > git checkout -b main
 
-Adicionar arquivo ao repositorio ou para atualizacao
-> git add
+Adicionar arquivo ao indice ou para atualizacao no repositorio remoto
+> git add exemplo.txt
 
-Commit
+Commit - confirmar alteracoes
 > git commit -m "DESCRIBE COMMIT IN A FEW WORDS"
 
-Push - efetivar as mudanças no servidor git
+Push - envia as alteracoes para o repositorio remoto
 > git push
 
 Pull (Pull, fetch)
