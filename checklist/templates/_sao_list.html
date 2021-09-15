@@ -1,0 +1,34 @@
+{% for ordem in page_obj %}
+<tr>
+  <td>{{ ordem.uep }}</td>
+  <td style="text-align: left; font-size: x-small;"><a target="_blank" href="https://erpweb.petrobras.com.br/sap/bc/gui/sap/its/webgui?sap-system-login-basic_auth=X&sap-client=400&sap-language=P&sap-theme=sap_corbu&~transaction=*IW33%20CAUFVD-AUFNR={{ ordem.ordem }}">{{ ordem.ordem }}</a></td>
+  <td style="font-size: x-small;">{{ ordem.descricaoordem|truncatechars:80 }}</td>
+  <td style="text-align: left; font-size: x-small;">{{ ordem.datafimreal|date:'d/m/Y' }}</td>
+  <td style="text-align: left; font-size: x-small;">{{ ordem.dataanalise|default_if_none:"&nbsp;"|date:'d/m/Y' }}</td>
+  <td style="font-size: x-small;">
+    {{ ordem.status }}
+  </td>
+  {% if ordem.resultado == "Grave" %}
+  <td style="text-align: left; background-color: #A4031F; color: whitesmoke; font-size: x-small;">
+  {% elif ordem.resultado == "Leve" %}
+  <td style="text-align: left; background-color: #F2DC5D; color: black; font-size: x-small;">
+  {% elif ordem.resultado == "Média" %}
+  <td style="text-align: left; background-color: #C57B57; color: black; font-size: x-small;">
+  {% else %}
+  <td style="text-align: left; background-color: #6c978a98; font-size: x-small;">
+  {% endif %}
+    {{ ordem.resultado }}
+  </td>
+  <td>{{ ordem.observacaoanalista|default_if_none:"&nbsp;"|truncatechars:60 }}</td>
+  <td style="text-align: left; font-size: x-small;">{{ ordem.modificacaoordem|default_if_none:"&nbsp;"|date:'d/m/Y' }}</td>
+  <td class="acoes" style="text-align: center;">
+    <a type="" class="m-0 p-1" href="\sao\ordem\{{ordem.ordem}}">
+      <i class="fas fa-search"></i>
+    </a>
+  </td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="10" class="text-center bg-warning">Tabela vazia</td>
+</tr>
+{% endfor %}

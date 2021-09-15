@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'epim/login.css' %}">
+{% endblock %}
+{% block title %}<title>Login</title>{% endblock %}
+
+{% block content %}
+
+{% if form.errors %}
+    <div class="alert alert-danger">Seu nome de usuário não corresponde com a senha inserida. Tente novamente.</div>
+{% endif %}
+
+<div id="login">
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div class="col-4"></div>
+            <div id="login-column" class="col-4">
+                <div id="login-box" class="col-md-12">
+                    <br><h3 class="text-center text-info"><i class="c fas fa-user"></i></h3>
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="username" class="text-info label-login">Usuário</label><br>
+                            <input type="text" name="username" id="username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-info label-login">Senha</label><br>
+                            <input type="password" name="password" id="password" class="form-control">
+                        </div>
+                        
+                        <div class="form-group pt-2" style="text-align: center;">
+                            <input type="submit" name="submit" class="btn-login btn btn-md" value="Login">
+                        </div>
+
+                        <div class="form-group pt-2" style="text-align: right;">
+                            <a href="/accounts/password_reset/">Precisa de ajuda?</a>
+                        </div>
+
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </form>
+                </div> 
+            </div>  
+            <div class="col-4"></div>
+        </div>
+    </div>
+
+</div>
+  {# Assumes you setup the password_reset view in your URLconf #}
+  <!-- <p><a href="{% url 'password_reset' %}">Lost password?</a></p> -->
+
+{% endblock %}
