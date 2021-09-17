@@ -31,7 +31,7 @@ Criar projeto Django
 -
 > django-admin startproject checklist
 
-Criar Django admin
+Criar usuário Django - admin
 > python manage.py createsuperuser
 
 Migrations
