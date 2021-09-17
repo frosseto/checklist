@@ -11,7 +11,8 @@ Ativar ambiente
 
 Instalar pacotes
 > pip install -r requirements.txt
-ou individualmente
+> ou individualmente
+>
 > pip install Django
 > 
 > pip install django-widget-tweaks
