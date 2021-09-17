@@ -11,6 +11,7 @@ Ativar ambiente
 
 Instalar pacotes
 > pip install -r requirements.txt
+> 
 > ou individualmente
 >
 > pip install Django
