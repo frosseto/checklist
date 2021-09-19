@@ -27,6 +27,9 @@ Conector postgreSQL
 > 
 > (win) pip install psycopg2
 
+Conector postgreSQL - Heroku
+> pip install dj-database-url
+
 Criar projeto Django
 -
 > django-admin startproject checklist
