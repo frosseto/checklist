@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+from django.db.models.fields import related
 from django.utils.timezone import now
 
 UEP_CHOICES = (
@@ -161,11 +163,17 @@ class Item(models.Model):
 class ListaVerificacao(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     observacao = models.CharField(db_column='Observacao', max_length=1024, blank=True, null=True)
-    criadopor = models.CharField(db_column='CriadoPor', max_length=100, blank=True, null=True)
+    criadopor = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True, on_delete=models.SET_NULL)
     criadaem = models.DateTimeField(db_column='CriadoEm', default=now, blank=True, null=True)
-    modificadopor = models.CharField(db_column='ModificadoPor', max_length=100, blank=True, null=True)
+    modificadopor = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
     modificadoem = models.DateTimeField(db_column='ModificadoEm', default=now, blank=True, null=True)
     modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
+
+    def save_model(self, request, obj, form, change):
+        if not obj.pk:
+            obj.criadopor = request.user
+        obj.modificadopor = request.user
+        super().save_model(request, obj, form, change)
 
     class Meta:
         managed = True
