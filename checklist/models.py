@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 UEP_CHOICES = (
     ('PMLZ','PMLZ'),
@@ -114,3 +115,69 @@ class Gravidade(models.Model):
     class Meta:
         managed = True
         db_table = '[tblGravidade]'
+
+# Checklist
+
+class Modelo(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)
+    nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
+    descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'Modelo'
+
+
+class Grupo(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)
+    nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
+    descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'Grupo'
+
+
+class ItemTipo(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)
+    nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'ItemTipo'
+
+
+class Item(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)
+    nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
+    descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
+    itemtipo_fk = models.ForeignKey(ItemTipo, models.DO_NOTHING, db_column="ItemTipo_FK", blank=True, null=True)
+    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'Item'
+
+class ListaVerificacao(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)
+    observacao = models.CharField(db_column='Observacao', max_length=1024, blank=True, null=True)
+    criadopor = models.CharField(db_column='CriadoPor', max_length=100, blank=True, null=True)
+    criadaem = models.DateTimeField(db_column='CriadoEm', default=now, blank=True, null=True)
+    modificadopor = models.CharField(db_column='ModificadoPor', max_length=100, blank=True, null=True)
+    modificadoem = models.DateTimeField(db_column='ModificadoEm', default=now, blank=True, null=True)
+    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'ListaVerificacao'
+
+
+class ListaVerificacaoxitemxResposta(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)
+    listaverificacao_fk = models.ForeignKey(ListaVerificacao, models.DO_NOTHING, db_column="ListaVerificacao_FK", blank=True, null=True)
+    item_fk = models.ForeignKey(Item, models.DO_NOTHING, db_column="Item_FK", blank=True, null=True)
+    resposta = models.CharField(models.DO_NOTHING, db_column="Resposta", max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'ListaVerificacaoxItemxResposta'
