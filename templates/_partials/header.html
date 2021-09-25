@@ -2,22 +2,18 @@
 {% load custom_tags %}
 
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top text-dark">
-    <img src="{% static 'img/logo.svg' %}"  width="32" height="32" class="d-inline-block align-top" alt="" loading="lazy">
+    <img src="{% static 'img/logo_checklist.svg' %}"  width="32" height="32" class="d-inline-block align-top" alt="" loading="lazy">
     <a class="nav-link" href="/">Início <span class="sr-only">(current)</span></a>
     <div class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Auditoria
+            Checklist
           </a>
           <div class="dropdown-menu rounded-0">
-            <a class="dropdown-item" href="\checklist">Ordens</a>
-            <!-- <a class="dropdown-item" href="\sar">Rotas</a> -->
+            <a class="dropdown-item" href="\checklist">Pesquisar LVs preenchidas</a>
+            <a class="dropdown-item" href="\checklist">Preencher nova LV</a>
           </div>
     </div>
-    <div class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Manutenção
-      </a>
-    </div>
+  
 
     <div class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

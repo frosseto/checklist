@@ -98,6 +98,16 @@ DATABASES = {
     }
 }
 
+# heroku
+# import os, subprocess, dj_database_url
+
+# bashCommand = "heroku config:get DATABASE_URL -a gelv"
+# DATABASEURL="postgres://crfchqbdiinhpz:28d98797dad9cd9e840f532a0db61a0b8c5b596033c2ac9fb204d1b99e84e0dc@ec2-44-198-223-154.compute-1.amazonaws.com:5432/d45e34obh8puao"
+# output = subprocess.check_output(['bash','-c', bashCommand]).decode('utf-8') 
+# DATABASES={}
+# DATABASES['default'] = dj_database_url.config(default=output,conn_max_age=600, ssl_require=True)
+
+
 
 
 
