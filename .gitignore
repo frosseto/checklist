@@ -1,2 +1,7 @@
 venv*
 __pycache__*
+db*
+chave_pub*
+checklist/migrations
+.DS_Store
+.gitignore
