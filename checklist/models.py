@@ -150,7 +150,9 @@ class Item(models.Model):
     descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
     itemtipo = models.CharField(db_column='ItemTipo', max_length=50, blank=True, null=True, choices=ITEM_TIPOS)
     modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
-
+    valorpadrao = models.CharField(models.DO_NOTHING, db_column="ValorPadrao", max_length=100, blank=True, null=True)
+    grupo_fk = models.ForeignKey(Grupo, models.DO_NOTHING, db_column="Grupo_FK", blank=True, null=True)
+    
     class Meta:
         managed = True
         db_table = 'Item'
