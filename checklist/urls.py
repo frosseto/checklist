@@ -16,6 +16,7 @@ urlpatterns = [
 	path('', index),
     path('accounts/',include('django.contrib.auth.urls')),
     path('jet/', include('jet.urls', 'jet')), 
+    #path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
 
     
     path('checklist', sao_inicio, name='sao_inicio'),

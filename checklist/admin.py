@@ -4,7 +4,6 @@ import csv
 from checklist.models import (Gravidade,)
 from checklist.models import (Modelo,
                               Grupo,
-                              ItemTipo,
                               Item)
 
 class ExportCsvMixin:
@@ -40,16 +39,11 @@ class GrupoAdmin(admin.ModelAdmin, ExportCsvMixin):
     #exclude = ['criadopor','criadoem','modificadopor','modificadoem']
 
 
-@admin.register(ItemTipo)
-class ItemTipoAdmin(admin.ModelAdmin, ExportCsvMixin):
-    search_fields = ['nome']
-    list_display = ['id','nome']
-
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     search_fields = ['nome','descricao']
-    list_display = ['id','nome','descricao','itemtipo_fk','modelo_fk']
+    list_display = ['id','nome','descricao','itemtipo','modelo_fk']
 
 
 @admin.register(Gravidade)

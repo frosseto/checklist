@@ -23,6 +23,10 @@ STATUS_CHOICES = (
     ('Aguardando analista','Aguardando analista'),
     ('Ordem analisada','Ordem analisada'),)
 
+ITEM_TIPOS = (
+    ('CHECKBOX','CheckBox'),
+    ('TEXT','Text'),
+    ('COMBOBOX','ComboBox'),)
 
 class OrdemPesquisa(models.Model):
     tblsaoid = models.IntegerField(db_column='tblSAOID')  # Field name made lowercase.
@@ -140,20 +144,11 @@ class Grupo(models.Model):
         db_table = 'Grupo'
 
 
-class ItemTipo(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)
-    nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'ItemTipo'
-
-
 class Item(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
     descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
-    itemtipo_fk = models.ForeignKey(ItemTipo, models.DO_NOTHING, db_column="ItemTipo_FK", blank=True, null=True)
+    itemtipo = models.CharField(db_column='ItemTipo', max_length=50, blank=True, null=True, choices=ITEM_TIPOS)
     modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
 
     class Meta:
@@ -180,7 +175,7 @@ class ListaVerificacao(models.Model):
         db_table = 'ListaVerificacao'
 
 
-class ListaVerificacaoxitemxResposta(models.Model):
+class ListaVerificacaoxItemxResposta(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     listaverificacao_fk = models.ForeignKey(ListaVerificacao, models.DO_NOTHING, db_column="ListaVerificacao_FK", blank=True, null=True)
     item_fk = models.ForeignKey(Item, models.DO_NOTHING, db_column="Item_FK", blank=True, null=True)
