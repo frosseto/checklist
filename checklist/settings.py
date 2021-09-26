@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -148,6 +149,7 @@ USE_THOUSAND_SEPARATOR = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = ['static']
 
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 
 
 

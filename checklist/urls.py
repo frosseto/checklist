@@ -15,7 +15,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 	path('', index),
     path('accounts/',include('django.contrib.auth.urls')),
+    path('jet/', include('jet.urls', 'jet')), 
 
+    
     path('checklist', sao_inicio, name='sao_inicio'),
     path('checklist/ordem/<int:ordem>', sao_ordem, name='sao_ordem'),
     path('checklist/ordem/<int:ordem>/edit/', sao_ordem_edit, name='sao_ordem_edit'),
