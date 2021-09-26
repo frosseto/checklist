@@ -1,7 +1,13 @@
 import django_filters
-from .models import OrdemPesquisa
 from django_filters import DateRangeFilter, DateFilter, BooleanFilter
 from django import forms
+from .models import (OrdemPesquisa,
+                     Modelo)
+
+class modeloFilter(django_filters.FilterSet):
+    class Meta:
+        model = Modelo
+        fields = ['nome', 'descricao']
 
 class ordemFilter(django_filters.FilterSet):
     start_date = DateFilter(field_name='datafimreal',lookup_expr=('gte'),) 

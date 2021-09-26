@@ -1,7 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import OrdemPesquisa, SAO, SAOResultado
-from .filters import ordemFilter
+from .models import (OrdemPesquisa, 
+                     SAO, 
+                     SAOResultado,
+                     Modelo)
+from .filters import (ordemFilter, 
+                      modeloFilter)
 from .forms import SAOForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
@@ -27,6 +31,62 @@ anp_legado = {'NA': 'na',
               'ADV': 'adv',
               'Fogo': 'detector-fogo',
               'BDV': 'detector-gas'}
+
+@login_required(login_url='/accounts/login/')
+def checklist_pesquisa(request):
+    data = request.GET.copy()
+    filtered_qs = modeloFilter( 
+                data, 
+                Modelo.objects.all()
+            ).qs
+    
+    page = request.GET.get('page', 1)
+    print(request.GET)
+    modelo_filter = modeloFilter(request.GET, queryset=filtered_qs)
+    paginator = Paginator(filtered_qs, 40)
+    
+    try:
+        response = paginator.page(page)
+    except PageNotAnInteger:
+        response = paginator.page(1)
+    except EmptyPage:
+        response = paginator.page(paginator.num_pages)
+ 
+    args = {'filter': modelo_filter, 'page_obj':response}
+    return render(
+        request, 
+        'checklist_pesquisa_lv_preenchida.html', 
+        args
+    )
+
+
+@login_required(login_url='/accounts/login/')
+def checklist_nova(request):
+    data = request.GET.copy()
+    filtered_qs = modeloFilter( 
+                data, 
+                Modelo.objects.all()
+            ).qs
+    
+    page = request.GET.get('page', 1)
+    print(request.GET)
+    modelo_filter = modeloFilter(request.GET, queryset=filtered_qs)
+    paginator = Paginator(filtered_qs, 40)
+    
+    try:
+        response = paginator.page(page)
+    except PageNotAnInteger:
+        response = paginator.page(1)
+    except EmptyPage:
+        response = paginator.page(paginator.num_pages)
+ 
+    args = {'filter': modelo_filter, 'page_obj':response}
+    return render(
+        request, 
+        'checklist_pesquisa_nova.html', 
+        args
+    )
+
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
@@ -61,6 +121,14 @@ def sao_inicio(request):
         'sao.html', 
         args
     )
+
+@login_required(login_url='/accounts/login/')
+def checklist_relatorio(request):
+    return render(
+        request, 
+        'checklist_relatorio.html'
+    )
+
 
 @login_required(login_url='/accounts/login/')
 def sao_ordem(request, ordem):

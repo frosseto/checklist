@@ -9,18 +9,13 @@
             Checklist
           </a>
           <div class="dropdown-menu rounded-0">
-            <a class="dropdown-item" href="\checklist">Pesquisar LVs preenchidas</a>
-            <a class="dropdown-item" href="\checklist">Preencher nova LV</a>
+            <a class="dropdown-item" href="{% url 'checklist_pesquisa' %}">Pesquisar LVs preenchidas</a>
+            <a class="dropdown-item" href="{% url 'checklist_nova' %}">Preencher nova LV</a>
           </div>
     </div>
   
 
-    <div class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Relatórios
-      </a>
-    </div>
-
+    <a class="nav-link" href="{% url 'checklist_relatorio' %}">Relatório <span class="sr-only">(current)</span></a>
     
     <div class="ml-auto row">
     </div>

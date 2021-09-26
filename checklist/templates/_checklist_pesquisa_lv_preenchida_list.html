@@ -1,0 +1,17 @@
+{% for modelo in page_obj %}
+<tr>
+  <td style="font-size: x-small;">{{ modelo.id }}</td>
+  <td style="font-size: x-small;">{{ modelo.nome }}</td>
+  <td style="font-size: x-small;">{{ modelo.descricao }}</td>
+  
+  <td class="acoes" style="text-align: center;">
+    <a type="" class="m-0 p-1" href="">
+      <i class="fas fa-search"></i>
+    </a>
+  </td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="10" class="text-center bg-warning">Tabela vazia</td>
+</tr>
+{% endfor %}

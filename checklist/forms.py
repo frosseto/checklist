@@ -1,5 +1,6 @@
 from django import forms
-from .models import SAO
+from .models import (SAO,
+                     Modelo)
 
 class SAOForm(forms.ModelForm):
     #campos somente leitura

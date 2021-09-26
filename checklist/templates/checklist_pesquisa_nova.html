@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sao/sao.css' %}">
+{% endblock %}
+
+{% block title %}
+<title>Pesquisa e criação de nova lista de verificação</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="conteiner-fluid">
+  <div style="overflow-y:scroll; max-height:calc(100vh - 50px) !important; min-height:calc(100vh - 50px) !important;">
+    <form method="get" class='pt-2 mx-2'>
+      <div class="row mx-3">
+        <div class="col-9">
+          <div class="row">
+            <div class="form-group mr-2">
+              <label for="nome" class="form-label p-0 ">Nome</label>
+              {% render_field filter.form.nome class="form-control form-control-sm" %}
+            </div>
+            <div class="form-group mr-2">
+              <label for="descricao" class="form-label">Descrição</label>
+              {% render_field filter.form.nome class="form-control form-control-sm" %}
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="row float-right">
+            <div class="form-group mr-2 pt-4">
+              <button type="submit" class="btn btn-sm btn-primary btn-sao">
+                <i class="fas fa-sliders-h"></i>&nbsp; Filtrar
+              </button>
+            </div>
+            <div class="form-group mr-2 pt-4">
+              <a type="submit" class="btn btn-sm btn-secondary btn-sao" href="/sao">
+                <i class="fas fa-eraser"></i> Limpar
+              </a>
+            </div>
+            <div class="form-group mr-2 pt-4">
+              <a type="submit" target="_self" href="{% url 'sao_proxima_ordem' %}" class="btn btn-sm btn-success btn-sao"><i class="fas fa-fire-extinguisher"></i> Estou com sorte</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row pt-2 mx-1">
+      <div class="col">
+      <table class="table table-striped table-hover table-sm">
+        <thead class="bg-secondary text-light">
+          <tr>
+            <th scope="col" style="text-align: left;">ID</th>
+            <th scope="col" style="text-align: left;">Nome</th>
+            <th scope="col" style="text-align: left;">Descrição</th>
+            <th scope="col" style="text-align: center;">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% include "_checklist_pesquisa_nova_list.html" %}
+        </tbody>
+      </table>
+      {% include "_paginator.html" %}
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
