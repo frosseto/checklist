@@ -71,3 +71,6 @@ Push - envia as alteracoes para o repositorio remoto
 
 Pull (Pull, fetch)
 > git pull
+
+Instalar o jet reboot admin
+> https://pythonrepo.com/repo/b1go-django-jet-reboot-python-administrative-interfaces
