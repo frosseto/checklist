@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_filters',
     'widget_tweaks',
     'checklist',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 ]
 
 MIDDLEWARE = [
@@ -153,4 +154,4 @@ STATICFILES_DIRS = ['static']
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 
 
-
+X_FRAME_OPTIONS = 'SAMEORIGIN'

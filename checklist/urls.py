@@ -32,4 +32,7 @@ urlpatterns = [
     path('checklist/ordem/<int:ordem>/cancel/', sao_ordem_cancel, name='sao_ordem_cancel'),
     path('checklist/ordem/pordem/', sao_proxima_ordem, name='sao_proxima_ordem'),
 
+    path('django_plotly_dash/', include('django_plotly_dash.urls')),
+
 ]
+

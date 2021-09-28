@@ -15,6 +15,8 @@ from django.db import connection
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from plotly.offline import plot
+import plotly.graph_objects as go
 
 anp = {'na': 'NA',
         'detector-fogo':'Fogo',
@@ -124,12 +126,31 @@ def sao_inicio(request):
         args
     )
 
+from . import relatorio_dash_app
 @login_required(login_url='/accounts/login/')
 def checklist_relatorio(request):
-    return render(
-        request, 
-        'checklist_relatorio.html'
-    )
+	def scatter():
+		x1 = [1,2,3,4,5,6,7,8]
+		y1 = [38, 35, 25, 45]
+
+		trace = go.Scatter(
+			x = x1,
+			y = y1
+		)
+		layout = dict(
+			title = 'Relatório',
+			xaxis = dict(range=[min(x1),max(x1)]),
+			yaxis = dict(range=[min(y1),max(y1)])
+		)
+		fig = go.Figure(data=[trace], layout=layout)
+		plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+		return plot_div
+
+	context = {
+		'plot': scatter()
+	}
+	return render(request, 'checklist_relatorio.html', context)
+
 
 
 @login_required(login_url='/accounts/login/')
