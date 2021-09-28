@@ -28,6 +28,12 @@ ITEM_TIPOS = (
     ('TEXT','Text'),
     ('COMBOBOX','ComboBox'),)
 
+LISTA_VERIFICACAO_STATUS = (
+    ('EM_ELABORACAO','Em elaboração'),
+    ('AGUARDANDO_APROVADOR','Aguardando Aprovador'),
+    ('AGUARDANDO_ANALISTA','Aguardando Analista'),
+    ('APROVADA','Aprovada'),)
+
 class OrdemPesquisa(models.Model):
     tblsaoid = models.IntegerField(db_column='tblSAOID')  # Field name made lowercase.
     uep = models.CharField(db_column='UEP', max_length=255, blank=True, null=True, choices=UEP_CHOICES)  # Field name made lowercase.
@@ -133,6 +139,8 @@ class Modelo(models.Model):
         managed = True
         db_table = 'Modelo'
 
+    def __str__(self):
+        return self.nome
 
 class Grupo(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
@@ -165,6 +173,7 @@ class ListaVerificacao(models.Model):
     modificadopor = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
     modificadoem = models.DateTimeField(db_column='ModificadoEm', default=now, blank=True, null=True)
     modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
+    status = models.CharField(db_column='Status', max_length=50, blank=True, null=True, choices=LISTA_VERIFICACAO_STATUS)
 
     def save_model(self, request, obj, form, change):
         if not obj.pk:

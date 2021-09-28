@@ -4,7 +4,9 @@ import csv
 from checklist.models import (Gravidade,)
 from checklist.models import (Modelo,
                               Grupo,
-                              Item)
+                              Item,
+                              ListaVerificacao,
+                              )
 
 class ExportCsvMixin:
     def export_as_csv(self, request, queryset):
@@ -46,9 +48,18 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ['id','nome','descricao','itemtipo','modelo_fk']
 
 
+@admin.register(ListaVerificacao)
+class ListaVerificacaoadmin(admin.ModelAdmin):
+    search_fields = ['observacao','criadopor','modelo_fk','status']
+    list_display = ['observacao','criadopor','modelo_fk','status']
+
+
 @admin.register(Gravidade)
 class Gravidadeadmin(admin.ModelAdmin):
     search_fields = ['categoria1','categoria2','valor','gravidade','acao','orientacao','acaocorretiva','ativo']
     list_display = ['categoria1','categoria2','valor','gravidade','acao','orientacao','acaocorretiva','ativo']
     #list_editable = ['categoria1','categoria2','valor','gravidade','acao','orientacao','acaocorretiva','ativo']
     #list_display_links = None
+
+
+

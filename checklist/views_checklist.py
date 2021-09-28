@@ -3,9 +3,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import (OrdemPesquisa, 
                      SAO, 
                      SAOResultado,
-                     Modelo)
+                     Modelo,
+                     ListaVerificacao)
 from .filters import (ordemFilter, 
-                      modeloFilter)
+                      modeloFilter,
+                      listaverificacaoFilter,)
 from .forms import SAOForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
@@ -35,14 +37,14 @@ anp_legado = {'NA': 'na',
 @login_required(login_url='/accounts/login/')
 def checklist_pesquisa(request):
     data = request.GET.copy()
-    filtered_qs = modeloFilter( 
+    filtered_qs = listaverificacaoFilter( 
                 data, 
-                Modelo.objects.all()
+                ListaVerificacao.objects.all()
             ).qs
     
     page = request.GET.get('page', 1)
     print(request.GET)
-    modelo_filter = modeloFilter(request.GET, queryset=filtered_qs)
+    listaverificacao_filter = listaverificacaoFilter(request.GET, queryset=filtered_qs)
     paginator = Paginator(filtered_qs, 40)
     
     try:
@@ -52,7 +54,7 @@ def checklist_pesquisa(request):
     except EmptyPage:
         response = paginator.page(paginator.num_pages)
  
-    args = {'filter': modelo_filter, 'page_obj':response}
+    args = {'filter': listaverificacao_filter, 'page_obj':response}
     return render(
         request, 
         'checklist_pesquisa_lv_preenchida.html', 
