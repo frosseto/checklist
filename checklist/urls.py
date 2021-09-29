@@ -3,14 +3,13 @@ from django.conf.urls import url
 from django.urls import include, path
 
 from .views import index
-from .views_checklist import (sao_inicio,
-                              sao_ordem,
-                              sao_ordem_edit,
-                              sao_ordem_save,
-                              sao_ordem_cancel,
-                              sao_proxima_ordem,
+from .views_checklist import (checklist_nova,
+                              checklist,
+                              checklist_edit,
+                              checklist_edit_cancel,
+                              checklist_save,
                               checklist_pesquisa,
-                              checklist_nova,
+                              checklist_nova_selecao,
                               checklist_relatorio)
                               
 
@@ -22,15 +21,14 @@ urlpatterns = [
     #path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
 
     path('checklist_pesquisa', checklist_pesquisa, name='checklist_pesquisa'),
-    path('checklist_nova', checklist_nova, name='checklist_nova'),
+    path('checklist_nova', checklist_nova_selecao, name='checklist_nova_selecao'),
     path('checklist_relatorio', checklist_relatorio, name='checklist_relatorio'),
 
-    path('checklist', sao_inicio, name='sao_inicio'),
-    path('checklist/ordem/<int:ordem>', sao_ordem, name='sao_ordem'),
-    path('checklist/ordem/<int:ordem>/edit/', sao_ordem_edit, name='sao_ordem_edit'),
-    path('checklist/ordem/<int:ordem>/save/', sao_ordem_save, name='sao_ordem_save'),
-    path('checklist/ordem/<int:ordem>/cancel/', sao_ordem_cancel, name='sao_ordem_cancel'),
-    path('checklist/ordem/pordem/', sao_proxima_ordem, name='sao_proxima_ordem'),
+    path('nova/<int:pk>/', checklist_nova, name='checklist_nova'),
+    path('checklist/<int:pk>/', checklist, name='checklist'),
+    path('checklist/<int:pk>/edit/', checklist_edit, name='checklist_edit'),
+    path('checklist/<int:pk>/save/', checklist_save, name='checklist_save'),
+    path('checklist/<int:pk>/cancel/', checklist_edit_cancel, name='checklist_edit_cancel'),
 
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
 

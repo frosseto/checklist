@@ -65,7 +65,7 @@ def checklist_pesquisa(request):
 
 
 @login_required(login_url='/accounts/login/')
-def checklist_nova(request):
+def checklist_nova_selecao(request):
     data = request.GET.copy()
     filtered_qs = modeloFilter( 
                 data, 
@@ -91,6 +91,27 @@ def checklist_nova(request):
         args
     )
 
+@login_required(login_url='/accounts/login/')
+def checklist_nova(request,pk):
+    return render(request, 'checklist_form.html')
+
+
+@login_required(login_url='/accounts/login/')
+def checklist(request,pk):
+    return render(request, 'checklist_form.html')
+
+
+@login_required(login_url='/accounts/login/')
+def checklist_edit(request,pk):
+    return render(request, 'checklist_form.html')
+
+@login_required(login_url='/accounts/login/')
+def checklist_save(request,pk):
+    return render(request, 'checklist_form.html')
+
+@login_required(login_url='/accounts/login/')
+def checklist_edit_cancel(request,pk):
+    return render(request, 'checklist_form.html')
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
