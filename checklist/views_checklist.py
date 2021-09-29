@@ -105,12 +105,19 @@ def checklist(request,pk):
 def checklist_edit(request,pk):
     return render(request, 'checklist_form.html')
 
+
 @login_required(login_url='/accounts/login/')
 def checklist_save(request,pk):
     return render(request, 'checklist_form.html')
 
+
 @login_required(login_url='/accounts/login/')
 def checklist_edit_cancel(request,pk):
+    return render(request, 'checklist_form.html')
+
+
+@login_required(login_url='/accounts/login/')
+def checklist_delete(request,pk):
     return render(request, 'checklist_form.html')
 
 # Create your views here.

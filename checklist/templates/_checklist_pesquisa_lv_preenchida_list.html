@@ -1,19 +1,19 @@
-{% for modelo in page_obj %}
+{% for checklist in page_obj %}
 <tr>
-  <td style="font-size: x-small;">{{ modelo.id }}</td>
-  <td style="font-size: x-small;">{{ modelo.modelo_fk }}</td>
-  <td style="font-size: x-small;">{{ modelo.observacao }}</td>
-  <td style="font-size: x-small;">{{ modelo.status }}</td>
-  <td style="font-size: x-small;">{{ modelo.criadopor }}</td>
-  <td style="font-size: x-small;">{{ modelo.criadoem }}</td>
-  <td style="font-size: x-small;">{{ modelo.modificadopor }}</td>
-  <td style="font-size: x-small;">{{ modelo.modificadoem }}</td>
+  <td style="font-size: x-small;">{{ checklist.id }}</td>
+  <td style="font-size: x-small;">{{ checklist.modelo_fk }}</td>
+  <td style="font-size: x-small;">{{ checklist.observacao }}</td>
+  <td style="font-size: x-small;">{{ checklist.status }}</td>
+  <td style="font-size: x-small;">{{ checklist.criadopor }}</td>
+  <td style="font-size: x-small;">{{ checklist.criadoem }}</td>
+  <td style="font-size: x-small;">{{ checklist.modificadopor }}</td>
+  <td style="font-size: x-small;">{{ checklist.modificadoem }}</td>
 
   <td class="acoes" style="text-align: center;">
-    <a type="" class="m-0 p-1" href="">
+    <a type="" class="m-0 p-1" href="{% url 'checklist' checklist.id %}">
         <i class="fas fa-eye"></i>
     </a>
-    <a type="" class="m-0 p-1" href="">
+    <a type="" class="m-0 p-1" href="{% url 'checklist_delete' checklist.id %}">
       <i class="fas fa-trash-alt"></i>
     </a>
   </td>
