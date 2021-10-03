@@ -5,20 +5,46 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{% static 'sao/sao.css' %}">
+
 {% endblock %}
 
 {% block title %}
 <title>Auditoria Ordens</title>
 {% endblock %}
 
+
+
 {% block content %}
+<div class="container"><div class="row">
+    <div class="col-12 m-2 p-2">
+        <div id="app">
+            <div>
+                <label class="row" v-for="(item, index) in Items">
+                <input type="checkbox" v-bind:key="index" v-model="SelectedItems[item]"> [[ item ]] 
+                </label>
+            </div>
+            <div>
+                <input type="text" v-model="newCheckbox">
+                <button @click="add">Add</button>
+            </div>
+            <div>
+                Output : [[ SelectedItems ]]
+            </div>
+        </div> 
+    </div>
+</div></div>
+ 
 
 {% endblock %}
 
 {% block footer %}
+
 {% endblock footer %}
 
 {% block js %}
 <script src="{% static 'js/moment.js/2.29.1/moment-with-locales.min.js' %}"></script>
-<script src="{% static 'sao/sao_ordem.js' %}"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<script src="{% static 'checklist/checklist_form.js' %}"></script>
+
 {% endblock js %} -->
