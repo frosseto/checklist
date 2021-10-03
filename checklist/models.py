@@ -151,6 +151,8 @@ class Grupo(models.Model):
         managed = True
         db_table = 'Grupo'
 
+    def __str__(self):
+        return self.nome
 
 class Item(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
