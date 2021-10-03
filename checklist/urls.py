@@ -4,7 +4,7 @@ from django.urls import include, path
 
 from rest_framework import routers
 
-from .views import index, listaverificacaoxitemxrespostaViewSet
+from .views import index, listaverificacaoxitemxrespostaViewSet, itemViewSet
 from .views_checklist import (checklist_nova,
                               checklist,
                               checklist_edit,
@@ -18,7 +18,7 @@ from .views_checklist import (checklist_nova,
 
 router = routers.DefaultRouter()
 router.register(r'listaverificacaoxitemxresposta', listaverificacaoxitemxrespostaViewSet)
-
+router.register(r'item', itemViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
