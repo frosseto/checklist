@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'checklist',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

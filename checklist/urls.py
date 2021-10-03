@@ -2,7 +2,9 @@ from django.contrib import admin
 from django.conf.urls import url
 from django.urls import include, path
 
-from .views import index
+from rest_framework import routers
+
+from .views import index, listaverificacaoxitemxrespostaViewSet
 from .views_checklist import (checklist_nova,
                               checklist,
                               checklist_edit,
@@ -13,6 +15,10 @@ from .views_checklist import (checklist_nova,
                               checklist_nova_selecao,
                               checklist_relatorio)
                               
+
+router = routers.DefaultRouter()
+router.register(r'listaverificacaoxitemxresposta', listaverificacaoxitemxrespostaViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +39,9 @@ urlpatterns = [
     path('checklist/<int:pk>/delete/', checklist_delete, name='checklist_delete'),
 
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
+
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 
 ]
 

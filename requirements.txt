@@ -28,6 +28,7 @@ django-jet-reboot==1.1.1
 django-plotly-dash==1.6.5
 django-redis==5.0.0
 django-widget-tweaks==1.4.8
+djangorestframework==3.12.4
 dpd-components==0.1.0
 dpd-static-support==0.0.5
 Flask==2.0.1
