@@ -30,6 +30,12 @@
             <div>
                 Output : [[ SelectedItems ]]
             </div>
+            <button @click="getItem">Itens</button>
+            <div v-for="item_verificacao in lv_itens">
+                <span>Itens</span>
+                [[ item_verificacao ]]
+                <br>
+            </div>
         </div> 
     </div>
 </div></div>
@@ -42,6 +48,8 @@
 {% endblock footer %}
 
 {% block js %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <script src="{% static 'js/moment.js/2.29.1/moment-with-locales.min.js' %}"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 
