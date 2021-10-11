@@ -1,5 +1,5 @@
 from checklist.filters import modeloFilter
-from .models import (ListaVerificacaoxItemxResposta,
+from .models import (ListaVerificacao, ListaVerificacaoxItemxResposta,
                      Item)
 from rest_framework import serializers
 from django.db import models
@@ -22,4 +22,12 @@ class itemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
         fields = ['id', 'nome','descricao','modelo','grupo','itemtipo','valorpadrao']
+
+
+class listaverificacaoSerializer(serializers.HyperlinkedModelSerializer):
+    modelo = serializers.IntegerField(source='modelo_fk.id')
+    class Meta:
+        model = ListaVerificacao
+        fields = ['id', 'modelo','observacao','status']
+
 
