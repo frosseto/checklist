@@ -1,3 +1,5 @@
+
+
 function groupBy(array, key){
     const result = {}
     // verifica se array existe e se tem pelo menos 1 item
@@ -11,31 +13,6 @@ function groupBy(array, key){
     }
     return result
   };
-
-// new Vue({
-//     el : "#app",
-//     delimiters : ['[[',']]'],
-//     data : {
-//       Items : [],
-//       newCheckbox : "",
-//       SelectedItems : {
-//       },
-//       lv_itens:{},
-//       groups: [],
-//       message: 'Olá Vue',
-//     },
-
-//     computed:{
-//         /*groups(){
-//           return groupBy(this.lv_itens, 'grupo')
-//         }*/
-//         reversedMessage: function () {
-//           // `this` aponta para a instância Vue da variável `vm`
-//           return this.message.split('').reverse().join('')
-//         } , 
-//     },
-//     }
-//   });
 
 
 var vm = new Vue({
@@ -59,9 +36,9 @@ var vm = new Vue({
 
   },
     methods:{
-    getItem() {
+      getLV() {
       axios
-        .get('http://localhost:5000/item/?format=json')
+        .get('http://localhost:5000/item/?format=json&modelo=' + modelo)
         .then(response => {
             this.lv_itens = response.data;
             console.log(response.data);
@@ -71,4 +48,7 @@ var vm = new Vue({
         })
     },
   },
+  created: function(){
+    this.getLV()
+}
 })
