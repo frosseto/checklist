@@ -23,9 +23,8 @@ router = routers.DefaultRouter()
 router.register(r'listaverificacaoxitemxresposta', listaverificacaoxitemxrespostaViewSet)
 router.register(r'listaverificacao', listaverificacacaoViewSet)
 router.register(r'listaverificacao/(?P<id>\d+)/?$', listaverificacacaoViewSet)
-
-
 router.register(r'item', itemViewSet)
+# router.register(r'item/(?P<id>\d+)/?$', itemViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

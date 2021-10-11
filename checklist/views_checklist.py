@@ -93,7 +93,8 @@ def checklist_nova_selecao(request):
 
 @login_required(login_url='/accounts/login/')
 def checklist_nova(request,pk):
-    return render(request, 'checklist_form.html')
+    context = {'pk': pk}
+    return render(request, 'checklist_form.html', context)
 
 
 @login_required(login_url='/accounts/login/')

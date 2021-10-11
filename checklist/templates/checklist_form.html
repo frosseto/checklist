@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+
+
 {% load static %}
 {% load custom_tags %}
 
@@ -17,6 +19,9 @@
 {% block content %}
 <div class="container"><div class="row">
     <div class="col-12 m-2 p-2">
+        <div>
+            {{ pk }}
+        </div>
         <!-- <div id="app">
             <div v-for="item in lv_itens">
                 <label class="row">
@@ -36,7 +41,7 @@
         <!-- </div>  -->
 
         <div id="app">
-            <button @click="getItem">Itens</button>
+            <button @click="getLV">Itens</button>
             <p>Mensagem original: "[[ message ]]"</p>
             <p>Mensagem ao contrário: "[[ reversedMessage ]]"</p>
             <div  v-for="group, groupName in lv_itens_grouped">
@@ -65,6 +70,13 @@
 {% endblock footer %}
 
 {% block js %}
+
+{{ pk|json_script:"pk" }}
+<script>
+    const modelo = JSON.parse(document.getElementById('pk').textContent);
+    console.log(modelo)
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script src="{% static 'js/moment.js/2.29.1/moment-with-locales.min.js' %}"></script>

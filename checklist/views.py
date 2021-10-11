@@ -26,6 +26,13 @@ class itemViewSet(viewsets.ModelViewSet):
     serializer_class = itemSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+            queryset = Item.objects.all()
+            modelo = self.request.query_params.get('modelo')
+            if modelo is not None:
+                queryset = queryset.filter(modelo_fk__id=modelo)
+            return queryset
+
 
 class listaverificacacaoViewSet(viewsets.ModelViewSet):
     queryset = ListaVerificacao.objects.all()
