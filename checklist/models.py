@@ -170,6 +170,7 @@ class Item(models.Model):
 
 class ListaVerificacao(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
+    nome = models.CharField(db_column='Nome', max_length=255, blank=True, null=True)
     observacao = models.CharField(db_column='Observacao', max_length=1024, blank=True, null=True)
     criadopor = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True, on_delete=models.SET_NULL)
     criadaem = models.DateTimeField(db_column='CriadoEm', default=now, blank=True, null=True)
