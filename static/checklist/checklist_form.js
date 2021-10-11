@@ -19,9 +19,9 @@ var vm = new Vue({
   el: '#app',
   delimiters : ['[[',']]'],
   data: {
-    message: 'Olá Vue',
     lv_itens : {},
     lv_selected_itens: {},
+    lv: {},
   },
   computed: {
     // uma função "getter" computada (computed getter)
