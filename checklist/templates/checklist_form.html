@@ -16,7 +16,7 @@
 
 {% block content %}
 <br>
-<div class="container-fluid">
+<div class="container-fluid" id="app">
     <div class="row">
         <div class="col-12">
             <div class="float-right">
@@ -26,10 +26,8 @@
         </div>
     </div>
 
-
-        <div id="app">
-
-            <div  v-for="group, groupName in lv_itens_grouped">
+    <div class="row">
+            <div class="col-12" v-for="group, groupName in lv_itens_grouped">
                 <div class="card my-2">
                     <div class="card-header">
                         [[ groupName ]]
@@ -45,16 +43,16 @@
                     </div>
                 </div>
             </div>
-
+        <div class="col-12">
             <div class="form-group">
-            <label for="observacao">Observação</label>
-            <textarea class="form-control" id="observacao" v-bind:key="observacao" v-model="lv" rows="3"></textarea>
-            </div>
-
-          </div>
+                <label for="observacao">Observação</label>
+                <textarea class="form-control" id="observacao" v-bind:key="observacao" v-model="lv" rows="3"></textarea>
+            </div>  
+        </div>
 
     </div>
-</div></div>
+
+</div>
  
 
 {% endblock %}
