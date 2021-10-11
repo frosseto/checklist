@@ -82,25 +82,25 @@ WSGI_APPLICATION = 'checklist.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 # local PostgreSQL database
-# """ DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'checklistdb', 
-#         'USER': 'checklist_app', 
-#         'PASSWORD': 'checklist123',
-#         'HOST': '127.0.0.1', 
-#         'PORT': '5432',
-#     }
-# } """
-
-
-#sqlite3
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'checklistdb', 
+        'USER': 'checklist_app', 
+        'PASSWORD': 'checklist123',
+        'HOST': '127.0.0.1', 
+        'PORT': '5432',
     }
-}
+} 
+
+
+#sqlite3ç
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 # heroku
 # import os, subprocess, dj_database_url

@@ -18,7 +18,7 @@ class listaverificacaoxitemxrespostaSerializer(serializers.HyperlinkedModelSeria
 
 class itemSerializer(serializers.HyperlinkedModelSerializer):
     modelo = serializers.IntegerField(source='modelo_fk.id')
-    grupo = serializers.IntegerField(source='grupo_fk.id')
+    grupo = serializers.CharField(source='grupo_fk.nome')
     class Meta:
         model = Item
         fields = ['id', 'nome','descricao','modelo','grupo','itemtipo','valorpadrao']

@@ -161,6 +161,7 @@ class Item(models.Model):
     itemtipo = models.CharField(db_column='ItemTipo', max_length=50, blank=True, null=True, choices=ITEM_TIPOS)
     modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
     valorpadrao = models.CharField(models.DO_NOTHING, db_column="ValorPadrao", max_length=100, blank=True, null=True)
+    valor_choice = models.CharField(models.DO_NOTHING, db_column="ValorChoice", max_length=255, blank=True, null=True)
     grupo_fk = models.ForeignKey(Grupo, models.DO_NOTHING, db_column="Grupo_FK", blank=True, null=True)
     
     class Meta:
@@ -176,7 +177,6 @@ class ListaVerificacao(models.Model):
     modificadoem = models.DateTimeField(db_column='ModificadoEm', default=now, blank=True, null=True)
     modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
     status = models.CharField(db_column='Status', max_length=50, blank=True, null=True, choices=LISTA_VERIFICACAO_STATUS)
-
     def save_model(self, request, obj, form, change):
         if not obj.pk:
             obj.criadopor = request.user

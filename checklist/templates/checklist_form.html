@@ -17,26 +17,43 @@
 {% block content %}
 <div class="container"><div class="row">
     <div class="col-12 m-2 p-2">
-        <div id="app">
-            <div>
-                <label class="row" v-for="(item, index) in Items">
-                <input type="checkbox" v-bind:key="index" v-model="SelectedItems[item]"> [[ item ]] 
+        <!-- <div id="app">
+            <div v-for="item in lv_itens">
+                <label class="row">
+                <input type="checkbox" v-bind:key="item.id" v-model="SelectedItems[item.id]"> [[ item.nome ]] 
                 </label>
             </div>
-            <div>
-                <input type="text" v-model="newCheckbox">
-                <button @click="add">Add</button>
-            </div>
-            <div>
-                Output : [[ SelectedItems ]]
-            </div>
+            
+
+            <p>Mensagem original: "[[ message ]]"</p>
+            <p>Mensagem ao contrário: "[[ reversedMessage ]]"</p> -->
+
+            <!-- <div v-for="group, groupName in groups">
+                <h2>{{grupo}}</h2>
+                <pre v-for="item in group">{{item}}</pre>
+            </div> -->
+
+        <!-- </div>  -->
+
+        <div id="app">
             <button @click="getItem">Itens</button>
-            <div v-for="item_verificacao in lv_itens">
-                <span>Itens</span>
-                [[ item_verificacao ]]
-                <br>
+            <p>Mensagem original: "[[ message ]]"</p>
+            <p>Mensagem ao contrário: "[[ reversedMessage ]]"</p>
+            <div  v-for="group, groupName in lv_itens_grouped">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class=card-title>[[ groupName ]]</h2>
+                        <div class='card-text' v-for="item in group">
+                            <label class="row">
+                                <input type="checkbox" v-bind:key="item.id" v-model="lv_selected_itens[item.id]"> 
+                                [[ item.nome ]] 
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div> 
+          </div>
+
     </div>
 </div></div>
  
