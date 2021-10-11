@@ -27,6 +27,10 @@
     </div>
 
     <div class="row">
+        <div class="col-12">
+            <label for="nome">Título</label>
+            <input id="nome" class="form-control form-control-sm" type="text" placeholder=".form-control-sm" v-bind:key="titulo" v-model="lv">
+        </div>
             <div class="col-12" v-for="group, groupName in lv_itens_grouped">
                 <div class="card my-2">
                     <div class="card-header">
