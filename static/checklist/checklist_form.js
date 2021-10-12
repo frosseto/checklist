@@ -1,3 +1,26 @@
+function alerta(data) {
+  if (!isEmpty(data.alert_text)){
+    let classe = ""
+    $('#tile-alert').removeClass();
+    $('#alert-strong-text').text(data.alert_title + ": ")
+    $('#alert-text').text(data.alert_text)
+    switch(data.alert_type){
+      case 'erro':
+        classe = "alert alert-danger alert-fixed"
+        break;
+      case 'sucesso':
+        classe = "alert alert-success alert-fixed"
+        break;
+      default:
+        classe = "alert alert-warning alert-fixed"
+    }
+    $('#tile-alert').addClass(classe);
+    $('#tile-alert').fadeIn(1000);
+    setTimeout(function() { 
+        $('#tile-alert').fadeOut(1000); 
+    }, 3000);
+  };
+};
 
 
 function groupBy(array, key){
@@ -62,6 +85,8 @@ var vm = new Vue({
             'X-CSRFToken': csrftoken,
           }
         })
+        alerta({alert_text: 'Aviso:', alert_title: 'LV Criada'})
+
     }
   }, //request.setRequestHeader("X-CSRFToken", csrftoken);
   created: function(){

@@ -30,7 +30,7 @@ class ExportCsvMixin:
 @admin.register(Modelo)
 class ModeloAdmin(admin.ModelAdmin, ExportCsvMixin):
     search_fields = ['nome','descricao']
-    list_display = ['id','nome','descricao']
+    list_display = ['nome','descricao']
     actions = ["export_as_csv"]
 
 

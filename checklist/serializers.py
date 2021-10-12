@@ -8,14 +8,28 @@ from django.db import models
 
 
 class listaverificacaoxitemxrespostaSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.SerializerMethodField('id')
-    listaverificacao_nome = serializers.CharField(source='listaverificacao_fk.modelo_fk.nome')
-    item = serializers.CharField(source='item_fk.nome')
-    itemtipo = serializers.CharField(source='item_fk.itemtipo')
-    item_valorpadrao = serializers.CharField(source='item_fk.valorpadrao')
+
+    listaverificacao = serializers.IntegerField(source='listaverificacao_fk.id')
+    item = serializers.IntegerField(source='item_fk.id')
     class Meta:
         model = ListaVerificacaoxItemxResposta
-        fields = ['id', 'listaverificacao_nome','item','itemtipo','item_valorpadrao','resposta']
+        fields = ['id','listaverificacao','item','resposta']
+
+
+    def create(self, validated_data):
+        print(dict(validated_data))
+        item_fk=dict(validated_data.get('item_fk'))
+        listaverificacao_fk=dict(validated_data.get('listaverificacao_fk'))
+        validated_data['item_fk']=None
+        validated_data['listaverificacao_fk']=None
+        listaverificacao = ListaVerificacao.objects.get(pk=listaverificacao_fk['id'])
+        item = Item.objects.get(pk=item_fk['id'])
+        lv_resposta = ListaVerificacaoxItemxResposta(**validated_data)
+        lv_resposta.listaverificacao_fk=listaverificacao
+        lv_resposta.item_fk=item
+        lv_resposta.save()
+        return lv_resposta
+
 
 
 class itemSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,6 +38,8 @@ class itemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
         fields = ['id', 'nome','descricao','modelo','grupo','itemtipo','valorpadrao']
+    
+    
 
 
 class listaverificacaoSerializer(serializers.HyperlinkedModelSerializer):
