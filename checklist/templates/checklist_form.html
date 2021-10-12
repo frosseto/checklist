@@ -21,7 +21,7 @@
         <div class="col-12">
             <div class="float-right">
                 <a class="btn btn-sm btn-secondary btn-sao mx-1" href="{% url 'checklist_nova_selecao'%}">Cancelar</a>
-                <button class="btn btn-sm btn-primary btn-sao float-right mx-1">Salvar</button>
+                <button class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="postLV">Salvar</button>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="row">
         <div class="col-12">
             <label for="nome">Título</label>
-            <input id="nome" class="form-control form-control-sm" type="text" placeholder=".form-control-sm" v-bind:key="titulo" v-model="lv">
+            <input id="nome" class="form-control form-control-sm" type="text" placeholder="Digite o título da LV" v-model="lv.nome">
         </div>
             <div class="col-12" v-for="group, groupName in lv_itens_grouped">
                 <div class="card my-2">
@@ -50,7 +50,7 @@
         <div class="col-12">
             <div class="form-group">
                 <label for="observacao">Observação</label>
-                <textarea class="form-control" id="observacao" v-bind:key="observacao" v-model="lv" rows="3"></textarea>
+                <textarea class="form-control" id="observacao" v-model="lv.observacao" placeholder="Observações para a LV" rows="3"></textarea>
             </div>  
         </div>
 

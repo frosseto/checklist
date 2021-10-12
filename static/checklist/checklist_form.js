@@ -21,7 +21,12 @@ var vm = new Vue({
   data: {
     lv_itens : {},
     lv_selected_itens: {},
-    lv: {},
+    lv: {
+         modelo:'',
+         nome:'',
+         observacao:'',
+         status:'',
+        },
   },
   computed: {
     // uma função "getter" computada (computed getter)
@@ -37,6 +42,7 @@ var vm = new Vue({
   },
     methods:{
       getLV() {
+      this.lv['modelo']=modelo;
       axios
         .get('http://localhost:5000/item/?format=json&modelo=' + modelo)
         .then(response => {
@@ -47,7 +53,17 @@ var vm = new Vue({
             console.log(error);
         })
     },
-  },
+    postLV(){
+      const csrftoken = getCookie('csrftoken');
+      console.log(csrftoken)
+      axios
+        .post('http://localhost:5000/listaverificacao/', this.lv,{
+          headers: {
+            'X-CSRFToken': csrftoken,
+          }
+        })
+    }
+  }, //request.setRequestHeader("X-CSRFToken", csrftoken);
   created: function(){
     this.getLV()
 }

@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.shortcuts import render, get_object_or_404
 
 #django rest
-from rest_framework import viewsets, permissions
+from rest_framework import serializers, viewsets, permissions
 from rest_framework.response import Response
 
 from .serializers import (listaverificacaoxitemxrespostaSerializer, 
@@ -44,6 +44,9 @@ class listaverificacacaoViewSet(viewsets.ModelViewSet):
             lv = get_object_or_404(queryset, pk=pk)
             serializer = listaverificacaoSerializer(lv)
             return Response(serializer.data)
+
+
+
 
 register = template.Library()
 @register.filter(name='has_group')

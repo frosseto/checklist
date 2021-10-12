@@ -131,7 +131,7 @@ class Gravidade(models.Model):
 # Checklist
 
 class Modelo(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)
+    id = models.IntegerField(db_column='ID', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
     descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
 
