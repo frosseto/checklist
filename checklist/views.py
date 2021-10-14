@@ -9,16 +9,64 @@ from rest_framework.response import Response
 
 from .serializers import (listaverificacaoxitemxrespostaSerializer, 
                           itemSerializer,
-                          listaverificacaoSerializer,)
+                          listaverificacaoSerializer,
+                          modeloSerializer,)
+                          
 from .models import (ListaVerificacaoxItemxResposta,
                      Item,
-                     ListaVerificacao,)
+                     ListaVerificacao,
+                     Modelo,)
+
+class modeloViewSet(viewsets.ModelViewSet):
+    queryset = Modelo.objects.all()
+    serializer_class = modeloSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class listaverificacaoxitemxrespostaViewSet(viewsets.ModelViewSet):
     queryset = ListaVerificacaoxItemxResposta.objects.all()
     serializer_class = listaverificacaoxitemxrespostaSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request):
+        queryset = ListaVerificacaoxItemxResposta.objects.all()
+        serializer = listaverificacaoxitemxrespostaSerializer(queryset, many=True)
+        return Response(serializer.data)   
+
+    def create(self, request):
+        serializer = listaverificacaoxitemxrespostaSerializer(many=True)
+
+        def listaverificacaoxitemxresposta_save(data):
+            print(data)
+            listaverificacao = ListaVerificacao.objects.get(pk=data['listaverificacao'])
+            item = Item.objects.get(pk=data['item'])
+            lv_resposta = ListaVerificacaoxItemxResposta.objects.create(listaverificacao_fk=listaverificacao,
+                                                                        item_fk=item,
+                                                                        resposta=data['resposta'])
+            lv_resposta.save()
+
+
+        if isinstance(request.data,list):
+            for data_item in request.data:
+                listaverificacaoxitemxresposta_save(data_item)
+        else:
+            listaverificacaoxitemxresposta_save(request.data)
+        return Response(serializer.data)   
+
+
+
+        # item_fk=dict(validated_data.get('item_fk'))
+        # listaverificacao_fk=dict(validated_data.get('listaverificacao_fk'))
+        # validated_data['item_fk']=None
+        # validated_data['listaverificacao_fk']=None
+        # listaverificacao = ListaVerificacao.objects.get(pk=listaverificacao_fk['id'])
+        # item = Item.objects.get(pk=item_fk['id'])
+        # lv_resposta = ListaVerificacaoxItemxResposta(**validated_data)
+        # lv_resposta.listaverificacao_fk=listaverificacao
+        # lv_resposta.item_fk=item
+        # lv_resposta.save()
+
+
 
 
 class itemViewSet(viewsets.ModelViewSet):

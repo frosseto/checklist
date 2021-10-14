@@ -7,7 +7,8 @@ from rest_framework import routers
 from .views import (index, 
                     listaverificacaoxitemxrespostaViewSet, 
                     itemViewSet,
-                    listaverificacacaoViewSet,)
+                    listaverificacacaoViewSet,
+                    modeloViewSet,)
 from .views_checklist import (checklist_nova,
                               checklist,
                               checklist_edit,
@@ -24,7 +25,7 @@ router.register(r'listaverificacaoxitemxresposta', listaverificacaoxitemxrespost
 router.register(r'listaverificacao', listaverificacacaoViewSet)
 router.register(r'listaverificacao/(?P<id>\d+)/?$', listaverificacacaoViewSet)
 router.register(r'item', itemViewSet)
-# router.register(r'item/(?P<id>\d+)/?$', itemViewSet)
+router.register(r'modelo', modeloViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
