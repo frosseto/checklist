@@ -11,7 +11,7 @@ from .views import (index,
                     modeloViewSet,)
 from .views_checklist import (checklist_nova,
                               checklist,
-                              checklist_edit,
+                              checklist_save,
                               checklist_pesquisa,
                               checklist_nova_selecao,
                               checklist_relatorio)
@@ -37,7 +37,7 @@ urlpatterns = [
 
     path('nova/<int:pk>/', checklist_nova, name='checklist_nova'),
     path('checklist/<int:pk>/', checklist, name='checklist'),
-    path('checklist/<int:pk>/edit/', checklist_edit, name='checklist_edit'),
+    path('checklist/<int:pk>/save/', checklist_save, name='checklist_edit'),
 
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
 

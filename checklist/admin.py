@@ -50,8 +50,8 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
 
 @admin.register(ListaVerificacao)
 class ListaVerificacaoadmin(admin.ModelAdmin):
-    search_fields = ['id','observacao','criadopor','modelo_fk','status']
-    list_display = ['id','observacao','criadopor','modelo_fk','status']
+    search_fields = ['id','nome','observacao','criadopor','modelo_fk','status']
+    list_display = ['id','nome','observacao','criadopor','modelo_fk','status']
 
 
 @admin.register(ListaVerificacaoxItemxResposta)

@@ -83,6 +83,7 @@ var vm = new Vue({
   delimiters : ['[[',']]'],
   data: {
     edit: false,
+    create: false,
     lv_itens : {},
     lv_selected_itens: {},
     lv: {
@@ -109,6 +110,17 @@ var vm = new Vue({
       getLV() {
       this.lv['modelo']=modelo_pk;
       this.lv['id']=lv_pk;
+      axios
+        .get('http://localhost:5000/listaverificacao/' + lv_pk + '/?format=json')
+        .then(response => {
+            lv = response.data;
+            console.log(response.data);
+            this.lv['nome']=lv['nome']
+            this.lv['observacao']=lv['observacao']
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
       axios
         .get('http://localhost:5000/item/?format=json&modelo=' + modelo_pk)
         .then(response => {
@@ -139,20 +151,23 @@ var vm = new Vue({
         
       },
       postLV(){
-        if(this.lv['id']==''){
-          console.log('nova lv');
-          data = {
-            'lv': JSON.stringify(this.lv),
-            'lv_selected_itens': JSON.stringify(this.lv_selected_itens)
-          }
+        
+        data = {
+          'lv': JSON.stringify(this.lv),
+          'lv_selected_itens': JSON.stringify(this.lv_selected_itens)
+        }
 
-          saveLV('',data)
-          alerta({alert_text: 'Aviso:', alert_title: 'LV criada'})
+        if(this.lv['id']==''){
+          url=''        
+          msg = {alert_text: 'Aviso:', alert_title: 'LV criada'}
         }
         else{
-          console.log('atualizacao lv')
-          alerta({alert_text: 'Aviso:', alert_title: 'LV atualizada'})
+          url = 'save/'
+          msg = {alert_text: 'Aviso:', alert_title: 'LV atualizada'}
         }
+
+        saveLV(url,data)
+        alerta(msg)
           
       },
       editLV(event){
@@ -162,6 +177,7 @@ var vm = new Vue({
       },
   },
   created: function(){
+    this.create=lv_pk==='';
     this.getLV()
 }
 })

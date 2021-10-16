@@ -21,9 +21,9 @@
         <div class="col-12">
             <div class="float-right">
                 <a class="btn btn-sm btn-secondary btn-sao mx-1" href="{% url 'checklist_nova_selecao'%}">Voltar</a>
-                <button id="save-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="postLV">Salvar</button>
-                <button v-if="edit" id="edit-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Editar</button>
-                <button v-if="!edit" id="cancel-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Cancelar</button>
+                <button v-if="create || edit" id="save-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="postLV">Salvar</button>
+                <button v-if="!create && !edit" id="edit-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Editar</button>
+                <button v-if="!create && edit" id="cancel-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Cancelar</button>
             </div>
         </div>
     </div>
