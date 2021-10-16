@@ -24,6 +24,7 @@
                 <button v-if="create || edit" id="save-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="saveLV">Salvar</button>
                 <button v-if="!create && !edit" id="edit-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Editar</button>
                 <button v-if="!create && edit" id="cancel-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Cancelar</button>
+                <button v-if="!create && !edit" id="delete-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="deleteLV">Apagar</button>
             </div>
         </div>
     </div>

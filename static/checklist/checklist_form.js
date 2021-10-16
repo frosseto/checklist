@@ -187,6 +187,27 @@ var vm = new Vue({
           console.log(targetId);
           this.edit = !this.edit;
       },
+
+      deleteLV(){
+        console.log('Delete LV')
+        url = '/checklist/' + this.lv['id'] + '/delete/'
+        const csrftoken = getCookie('csrftoken');
+        console.log(csrftoken)
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: function(request) {
+                request.setRequestHeader("X-CSRFToken", csrftoken);
+              },
+            success: data => {
+                console.log(data['msg'])
+                window.location.href = '/checklist_pesquisa';
+          }
+        });
+      },
+
+
   },
   created: function(){
     this.create=lv_pk==='';

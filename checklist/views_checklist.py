@@ -1,14 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import (Item, ListaVerificacaoxItemxResposta, OrdemPesquisa, 
-                     SAO, 
-                     SAOResultado,
+from .models import (Item, ListaVerificacaoxItemxResposta,
                      Modelo,
                      ListaVerificacao)
-from .filters import (ordemFilter, 
-                      modeloFilter,
+from .filters import (modeloFilter,
                       listaverificacaoFilter,)
-from .forms import SAOForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
 from django.db import connection
@@ -146,12 +142,13 @@ def checklist(request,pk):
 
 @login_required(login_url='/accounts/login/')
 def checklist_delete(request,pk):
-    if request.method == 'POST':
-        data = request.POST 
-        print(data)
-        res={}
-        res['msg'] = 'Sucesso'
-        return JsonResponse(res)
+    listaverificacao=ListaVerificacao.objects.get(pk=pk)
+    listaverificacaoxitemxresposta = ListaVerificacaoxItemxResposta.objects.filter(listaverificacao_fk__id=pk)
+    listaverificacaoxitemxresposta.delete()
+    listaverificacao.delete()
+    res={}
+    res['msg'] = 'Sucesso'
+    return JsonResponse(res)
 
 
 @login_required(login_url='/accounts/login/')
