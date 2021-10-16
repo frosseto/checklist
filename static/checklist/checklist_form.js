@@ -86,6 +86,11 @@ var vm = new Vue({
 
   },
     methods:{
+
+      goBack() {
+        window.history.back();
+      },
+
       getLV() {
       this.lv['modelo']=modelo_pk;
       this.lv['id']=lv_pk;
