@@ -2,12 +2,13 @@
 <tr>
   <td style="font-size: x-small;">{{ checklist.id }}</td>
   <td style="font-size: x-small;">{{ checklist.modelo_fk }}</td>
+  <td style="font-size: x-small;">{{ checklist.nome }}</td>
   <td style="font-size: x-small;">{{ checklist.observacao }}</td>
   <td style="font-size: x-small;">{{ checklist.status }}</td>
   <td style="font-size: x-small;">{{ checklist.criadopor }}</td>
-  <td style="font-size: x-small;">{{ checklist.criadoem }}</td>
+  <td style="font-size: x-small;">{{ checklist.criadoem|date:"M d, Y" }}</td>
   <td style="font-size: x-small;">{{ checklist.modificadopor }}</td>
-  <td style="font-size: x-small;">{{ checklist.modificadoem }}</td>
+  <td style="font-size: x-small;">{{ checklist.modificadoem|date:"d/m/Y" }}</td>
 
   <td class="acoes" style="text-align: center;">
     <a type="" class="m-0 p-1" href="{% url 'checklist' checklist.id %}">
