@@ -57,26 +57,6 @@ function groupBy(array, key){
   };
 
 
-var saveLV = function (url,data) {
-  const csrftoken = getCookie('csrftoken');
-  console.log(csrftoken)
-  //data = JSON.stringify(data)
-  console.log(data)
-  $.ajax({
-      url: url,
-      data: data,
-      type: 'POST',
-      dataType: 'json',
-      beforeSend: function(request) {
-          request.setRequestHeader("X-CSRFToken", csrftoken);
-        },
-      success: function (data) {
-          console.log(data)
-
-    }
-  });
-};
-
 
 var vm = new Vue({
   el: '#app',
@@ -95,14 +75,13 @@ var vm = new Vue({
         },
   },
   computed: {
-    // uma função "getter" computada (computed getter)
-    reversedMessage: function (){
-      // `this` aponta para a instância Vue da variável `vm`
-      return this.message.split('').reverse().join('')
-    },
 
     lv_itens_grouped: function(){
       return groupBy(this.lv_itens, 'grupo')
+    },
+
+    isDisabled() {
+      return !(this.create || this.edit);
     },
 
   },
@@ -150,7 +129,15 @@ var vm = new Vue({
 
         
       },
-      postLV(){
+
+      updateID(id){
+        if (this.lv['id']==''){
+          this.lv['id']=id
+        };
+      },
+
+
+      saveLV(){
         
         data = {
           'lv': JSON.stringify(this.lv),
@@ -159,17 +146,37 @@ var vm = new Vue({
 
         if(this.lv['id']==''){
           url=''        
-          msg = {alert_text: 'Aviso:', alert_title: 'LV criada'}
+          msg = {alert_text: 'LV criada:', alert_title: 'Aviso: '}
+          this.create=false
         }
         else{
-          url = 'save/'
-          msg = {alert_text: 'Aviso:', alert_title: 'LV atualizada'}
+          url = '/checklist/' + this.lv['id'] + '/save/'
+          msg = {alert_text: 'LV atualizada', alert_title: 'Aviso: '}
         }
 
-        saveLV(url,data)
-        alerta(msg)
-          
+
+        const csrftoken = getCookie('csrftoken');
+        console.log(csrftoken)
+        console.log(data)
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: function(request) {
+                request.setRequestHeader("X-CSRFToken", csrftoken);
+              },
+            success: data => {
+                console.log(data.lv_pk)
+                this.updateID(data.lv_pk)
+                alerta(msg)
+          }
+        });
+        this.edit=false;
       },
+
+
+
       editLV(event){
           targetId = event.currentTarget.id;
           console.log(targetId);

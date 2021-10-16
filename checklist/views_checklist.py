@@ -124,6 +124,7 @@ def checklist_nova(request,pk):
 
         res={}
         res['msg'] = 'Sucesso'
+        res['lv_pk'] = listaverificacao.id
         return JsonResponse(res)
     else:
         context = {'modelo_pk': pk, 'lv_pk': '', 'acao': 'create'}
