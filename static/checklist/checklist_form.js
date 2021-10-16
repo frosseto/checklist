@@ -23,6 +23,25 @@ function alerta(data) {
 };
 
 
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+
+
 function groupBy(array, key){
     const result = {}
     // verifica se array existe e se tem pelo menos 1 item
@@ -38,13 +57,36 @@ function groupBy(array, key){
   };
 
 
+var saveLV = function (url,data) {
+  const csrftoken = getCookie('csrftoken');
+  console.log(csrftoken)
+  //data = JSON.stringify(data)
+  console.log(data)
+  $.ajax({
+      url: url,
+      data: data,
+      type: 'POST',
+      dataType: 'json',
+      beforeSend: function(request) {
+          request.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+      success: function (data) {
+          console.log(data)
+
+    }
+  });
+};
+
+
 var vm = new Vue({
   el: '#app',
   delimiters : ['[[',']]'],
   data: {
+    edit: false,
     lv_itens : {},
     lv_selected_itens: {},
     lv: {
+         id: '',
          modelo:'',
          nome:'',
          observacao:'',
@@ -65,30 +107,60 @@ var vm = new Vue({
   },
     methods:{
       getLV() {
-      this.lv['modelo']=modelo;
+      this.lv['modelo']=modelo_pk;
+      this.lv['id']=lv_pk;
       axios
-        .get('http://localhost:5000/item/?format=json&modelo=' + modelo)
+        .get('http://localhost:5000/item/?format=json&modelo=' + modelo_pk)
         .then(response => {
             this.lv_itens = response.data;
             console.log(response.data);
         })
         .catch(function (error) {
             console.log(error);
-        })
-    },
-    postLV(){
-      const csrftoken = getCookie('csrftoken');
-      console.log(csrftoken)
+        });
       axios
-        .post('http://localhost:5000/listaverificacao/', this.lv,{
-          headers: {
-            'X-CSRFToken': csrftoken,
-          }
-        })
-        alerta({alert_text: 'Aviso:', alert_title: 'LV Criada'})
+        .get('http://localhost:5000/listaverificacaoxitemxresposta/?format=json&listaverificacao=' + lv_pk)
+        .then(response => {
+            console.log('respostas')
+            console.log(response.data)
+            var lv_selected_itens = {};
 
-    }
-  }, //request.setRequestHeader("X-CSRFToken", csrftoken);
+            selected_itens = response.data
+            selected_itens.forEach(item=>{
+              var resposta = (item.resposta === 'True');
+              lv_selected_itens[item.item]=resposta;
+            })
+            this.lv_selected_itens=lv_selected_itens;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        
+      },
+      postLV(){
+        if(this.lv['id']==''){
+          console.log('nova lv');
+          data = {
+            'lv': JSON.stringify(this.lv),
+            'lv_selected_itens': JSON.stringify(this.lv_selected_itens)
+          }
+
+          saveLV('',data)
+          alerta({alert_text: 'Aviso:', alert_title: 'LV criada'})
+        }
+        else{
+          console.log('atualizacao lv')
+          alerta({alert_text: 'Aviso:', alert_title: 'LV atualizada'})
+        }
+          
+      },
+      editLV(event){
+          targetId = event.currentTarget.id;
+          console.log(targetId);
+          this.edit = !this.edit;
+      },
+  },
   created: function(){
     this.getLV()
 }

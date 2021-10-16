@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.http import HttpResponse
 import csv
-from checklist.models import (Gravidade,)
 from checklist.models import (Modelo,
                               Grupo,
                               Item,
                               ListaVerificacao,
+                              ListaVerificacaoxItemxResposta,
                               )
 
 class ExportCsvMixin:
@@ -50,16 +50,17 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
 
 @admin.register(ListaVerificacao)
 class ListaVerificacaoadmin(admin.ModelAdmin):
-    search_fields = ['observacao','criadopor','modelo_fk','status']
-    list_display = ['observacao','criadopor','modelo_fk','status']
+    search_fields = ['id','observacao','criadopor','modelo_fk','status']
+    list_display = ['id','observacao','criadopor','modelo_fk','status']
 
 
-@admin.register(Gravidade)
-class Gravidadeadmin(admin.ModelAdmin):
-    search_fields = ['categoria1','categoria2','valor','gravidade','acao','orientacao','acaocorretiva','ativo']
-    list_display = ['categoria1','categoria2','valor','gravidade','acao','orientacao','acaocorretiva','ativo']
-    #list_editable = ['categoria1','categoria2','valor','gravidade','acao','orientacao','acaocorretiva','ativo']
-    #list_display_links = None
+@admin.register(ListaVerificacaoxItemxResposta)
+class ListaVerificacaoxItemxRespostaadmin(admin.ModelAdmin):
+    search_fields = ['listaverificacao_fk','item_fk','resposta']
+    list_display = ['id','listaverificacao_fk','item_fk','resposta']
+    list_editable = ['listaverificacao_fk','item_fk','resposta']
+
+
 
 
 

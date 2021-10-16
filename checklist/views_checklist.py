@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import (OrdemPesquisa, 
+from .models import (Item, ListaVerificacaoxItemxResposta, OrdemPesquisa, 
                      SAO, 
                      SAOResultado,
                      Modelo,
@@ -17,6 +17,8 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from plotly.offline import plot
 import plotly.graph_objects as go
+import json
+
 
 anp = {'na': 'NA',
         'detector-fogo':'Fogo',
@@ -36,6 +38,8 @@ anp_legado = {'NA': 'na',
               'Fogo': 'detector-fogo',
               'BDV': 'detector-gas'}
 
+
+# pesquisar lvs para visualizacao e edicao
 @login_required(login_url='/accounts/login/')
 def checklist_pesquisa(request):
     data = request.GET.copy()
@@ -64,6 +68,7 @@ def checklist_pesquisa(request):
     )
 
 
+# pesquisar lvs para criacao
 @login_required(login_url='/accounts/login/')
 def checklist_nova_selecao(request):
     data = request.GET.copy()
@@ -91,35 +96,73 @@ def checklist_nova_selecao(request):
         args
     )
 
+
+# criar e salvar lv
 @login_required(login_url='/accounts/login/')
 def checklist_nova(request,pk):
-    context = {'pk': pk}
+
+    if request.method == 'POST':
+
+        data = request.POST 
+        lv = json.loads(data.get('lv'))   
+        lv_selected_itens = json.loads(data.get('lv_selected_itens'))  
+
+        modelo=Modelo.objects.get(pk=lv['modelo'])
+        listaverificacao=ListaVerificacao.objects.create(modelo_fk=modelo,
+                                                         nome=lv['nome'],
+                                                         observacao=lv['observacao'],
+                                                         status=lv['status'])
+        listaverificacao.save()
+
+
+        print(lv_selected_itens)
+        for key in lv_selected_itens:
+            item=Item.objects.get(pk=key)
+            item=ListaVerificacaoxItemxResposta.objects.create(listaverificacao_fk=listaverificacao,
+                                                               item_fk=item,
+                                                               resposta=lv_selected_itens[key])
+            item.save()
+
+
+        res={}
+        res['msg'] = 'Sucesso'
+        return JsonResponse(res)
+    else:
+        context = {'modelo_pk': pk, 'lv_pk': '', 'acao': 'create'}
+        return render(request, 'checklist_form.html', context)
+    
+
+    
+# visualizar e editar lv
+@login_required(login_url='/accounts/login/')
+def checklist(request,pk):
+    listaverificacao = ListaVerificacao.objects.get(pk=pk)
+    modelo_pk = listaverificacao.modelo_fk.pk
+    lv_pk = pk
+    context = {'modelo_pk': modelo_pk, 'lv_pk': lv_pk, 'acao': 'view'}
     return render(request, 'checklist_form.html', context)
 
 
-@login_required(login_url='/accounts/login/')
-def checklist(request,pk):
-    return render(request, 'checklist_form.html')
 
 
 @login_required(login_url='/accounts/login/')
 def checklist_edit(request,pk):
-    return render(request, 'checklist_form.html')
+    if request.method == 'POST':
+        data = request.POST 
+        print(data)
+        res={}
+        res['msg'] = 'Sucesso'
+        return JsonResponse(res)
 
 
-@login_required(login_url='/accounts/login/')
-def checklist_save(request,pk):
-    return render(request, 'checklist_form.html')
 
 
-@login_required(login_url='/accounts/login/')
-def checklist_edit_cancel(request,pk):
-    return render(request, 'checklist_form.html')
 
 
-@login_required(login_url='/accounts/login/')
-def checklist_delete(request,pk):
-    return render(request, 'checklist_form.html')
+
+
+
+
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
