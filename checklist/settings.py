@@ -120,3 +120,10 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
+EMAIL_PORT = config('EMAIL_PORT')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+EMAIL_USE_TLS = False
