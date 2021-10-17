@@ -1,1 +1,1 @@
-web: gunicorn contatos_base.wsgi
+web: gunicorn checklist.wsgipi
