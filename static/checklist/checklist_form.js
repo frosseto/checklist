@@ -95,7 +95,7 @@ var vm = new Vue({
       this.lv['modelo']=modelo_pk;
       this.lv['id']=lv_pk;
       axios
-        .get('http://localhost:5000/listaverificacao/' + lv_pk + '/?format=json')
+        .get('https://checklist-pi.herokuapp.com/listaverificacao/' + lv_pk + '/?format=json')
         .then(response => {
             lv = response.data;
             console.log(response.data);
@@ -106,7 +106,7 @@ var vm = new Vue({
             console.log(error);
         });
       axios
-        .get('http://localhost:5000/item/?format=json&modelo=' + modelo_pk)
+        .get('https://checklist-pi.herokuapp.com/item/?format=json&modelo=' + modelo_pk)
         .then(response => {
             this.lv_itens = response.data;
             console.log(response.data);
@@ -115,7 +115,7 @@ var vm = new Vue({
             console.log(error);
         });
       axios
-        .get('http://localhost:5000/listaverificacaoxitemxresposta/?format=json&listaverificacao=' + lv_pk)
+        .get('https://checklist-pi.herokuapp.com/listaverificacaoxitemxresposta/?format=json&listaverificacao=' + lv_pk)
         .then(response => {
             console.log('respostas')
             console.log(response.data)
