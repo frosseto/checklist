@@ -1,1 +1,1 @@
-web: gunicorn checklist.wsgipi
+web: gunicorn checklist.wsgi
