@@ -11,9 +11,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['https://checklist-pi.herokuapp.com','localhost']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -73,11 +73,11 @@ WSGI_APPLICATION = 'checklist.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':  os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 } 
 
@@ -121,9 +121,9 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
+EMAIL_PORT = config('EMAIL_PORT')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 EMAIL_USE_TLS = False
