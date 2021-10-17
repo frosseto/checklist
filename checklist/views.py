@@ -34,31 +34,7 @@ class listaverificacaoxitemxrespostaViewSet(viewsets.ModelViewSet):
             if listaverificacao is not None:
                 queryset = queryset.filter(listaverificacao_fk__id=listaverificacao)
             return queryset
-
-    # def list(self, request):
-    #     queryset = ListaVerificacaoxItemxResposta.objects.all()
-    #     serializer = listaverificacaoxitemxrespostaSerializer(queryset, many=True)
-    #     return Response(serializer.data)   
-
-    # def create(self, request):
-    #     serializer = listaverificacaoxitemxrespostaSerializer(many=True)
-
-    #     def listaverificacaoxitemxresposta_save(data):
-    #         print(data)
-    #         listaverificacao = ListaVerificacao.objects.get(pk=data['listaverificacao'])
-    #         item = Item.objects.get(pk=data['item'])
-    #         lv_resposta = ListaVerificacaoxItemxResposta.objects.create(listaverificacao_fk=listaverificacao,
-    #                                                                     item_fk=item,
-    #                                                                     resposta=data['resposta'])
-    #         lv_resposta.save()
-
-
-    #     if isinstance(request.data,list):
-    #         for data_item in request.data:
-    #             listaverificacaoxitemxresposta_save(data_item)
-    #     else:
-    #         listaverificacaoxitemxresposta_save(request.data)
-    #     return Response(serializer.data)   
+ 
 
 
 

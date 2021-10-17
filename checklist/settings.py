@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'checklist',
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'rest_framework',
+    'notifications',
 ]
 
 MIDDLEWARE = [
