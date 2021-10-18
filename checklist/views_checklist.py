@@ -166,13 +166,17 @@ def checklist_save(request,pk):
         listaverificacao.observacao = lv['observacao']
         listaverificacao.save()
 
+        print(lv_selected_itens)
         for key in lv_selected_itens:
-            print(key,lv_selected_itens[key])
             item = Item.objects.get(pk=key)
             itemresposta = ListaVerificacaoxItemxResposta.objects.filter(listaverificacao_fk=listaverificacao,item_fk=item)
             if itemresposta:
-                itemresposta.resposta = str(lv_selected_itens[key])
+                print('update',key,str(lv_selected_itens[key]))
+                itemresposta.update(
+                    resposta = str(lv_selected_itens[key])
+                )
             else:
+                print('create',key,str(lv_selected_itens[key]))
                 ListaVerificacaoxItemxResposta.objects.create(listaverificacao_fk=listaverificacao,
                                                               item_fk=item,
                                                               resposta=str(lv_selected_itens[key]))
