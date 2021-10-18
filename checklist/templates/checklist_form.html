@@ -48,12 +48,39 @@
                         
                         <div class='card-text' v-for="item in group">
                             <label class="row">
-                                <input class="mx-2" 
-                                       type="checkbox" 
-                                       v-bind:key="item.id" 
-                                       v-model="lv_selected_itens[item.id]"
-                                       :disabled="isDisabled"> 
-                                [[ item.nome ]] 
+
+                                <div v-if="item.itemtipo === 'CHECKBOX'">
+                                    
+                                    <input class="mx-2" 
+                                    type="checkbox" 
+                                    v-bind:key="item.id" 
+                                    v-model="lv_selected_itens[item.id]"
+                                    :disabled="isDisabled"> 
+
+                                    [[ item.nome ]] 
+
+                                  </div>
+                                  <div v-else-if="item.itemtipo === 'TEXT'">
+                                    
+                                    [[ item.nome ]] 
+
+                                    <input class="mx-2" 
+                                    type="text" 
+                                    v-bind:key="item.id" 
+                                    v-model="lv_selected_itens[item.id]"
+                                    :disabled="isDisabled">
+
+                                  </div>
+    
+                                  <div v-else>
+                                    Tipo de controle selecionado no modelo inválido
+                                  </div>
+
+                               
+
+
+
+                                
                             </label>
                         </div>
                     </div>

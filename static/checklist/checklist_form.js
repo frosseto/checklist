@@ -132,8 +132,16 @@ var vm = new Vue({
 
             selected_itens = response.data
             selected_itens.forEach(item=>{
-              var resposta = (item.resposta === 'True');
+              
+              var resposta = ""
+              if (['True', 'False'].includes(item.resposta)){
+                resposta = (item.resposta === 'True');
+              } else {
+                resposta = item.resposta;
+              }
+               
               lv_selected_itens[item.item]=resposta;
+              console.log('resposta: ' + item.item + ' ' + '; reposta: ' + resposta + ' ' + lv_selected_itens[item.item])
             })
             this.lv_selected_itens=lv_selected_itens;
         })
