@@ -92,64 +92,89 @@ var vm = new Vue({
       },
 
       getLV() {
-      this.lv['modelo']=modelo_pk;
-      this.lv['id']=lv_pk;
-      axios({
+
+        this.lv['modelo']=modelo_pk;
+        this.lv['id']=lv_pk;
+
+        axios({
           method:'get',
-          url: 'listaverificacao/' + lv_pk + '/?format=json',
+          url: 'item/?format=json&modelo=' + modelo_pk,
           baseURL: '/',
-        })
-        .then(response => {
-            lv = response.data;
-            console.log(response.data);
-            this.lv['nome']=lv['nome']
-            this.lv['observacao']=lv['observacao']
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-      axios({
-        method:'get',
-        url: 'item/?format=json&modelo=' + modelo_pk,
-        baseURL: '/',
-      })
-        .then(response => {
-            this.lv_itens = response.data;
-            console.log(response.data);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-      axios({
-        method:'get',
-        url: 'listaverificacaoxitemxresposta/?format=json&listaverificacao=' + lv_pk,
-        baseURL: '/',
-      })
-        .then(response => {
-            console.log('respostas')
-            console.log(response.data)
-            var lv_selected_itens = {};
+          })
+          .then(response => {
+            lv_itens = response.data;
+            this.lv_itens = lv_itens;
 
-            selected_itens = response.data
-            selected_itens.forEach(item=>{
-              
-              var resposta = ""
-              if (['True', 'False'].includes(item.resposta)){
-                resposta = (item.resposta === 'True');
-              } else {
-                resposta = item.resposta;
+            // valores padrao
+            if (lv_pk==''){
+              console.log('inicializar com valores padrao')
+
+              var lv_selected_itens = {};
+              var itens = this.lv_itens;        
+              itens.forEach(item => {
+                id = item['id']
+                respostapadrao = item['valorpadrao']
+                console.log('id '+id+' respostapadrao '+respostapadrao)
+                if ( !isEmpty(respostapadrao)){
+                  lv_selected_itens[id]=respostapadrao
+                }
+              });
+              this.lv_selected_itens=lv_selected_itens;
+
+
               }
-               
-              lv_selected_itens[item.item]=resposta;
-              console.log('resposta: ' + item.item + ' ' + '; reposta: ' + resposta + ' ' + lv_selected_itens[item.item])
-            })
-            this.lv_selected_itens=lv_selected_itens;
-        })
-        .catch(function (error) {
-            console.log(error);
+
+          })
+          .catch(function (error) {
+              console.log(error);
         });
 
-        
+
+        if (!isEmpty(lv_pk)){
+
+          axios({
+            method:'get',
+            url: 'listaverificacao/' + lv_pk + '/?format=json',
+            baseURL: '/',
+          })
+          .then(response => {
+              lv = response.data;
+              console.log(response.data);
+              this.lv['nome']=lv['nome']
+              this.lv['observacao']=lv['observacao']
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+
+          axios({
+            method:'get',
+            url: 'listaverificacaoxitemxresposta/?format=json&listaverificacao=' + lv_pk,
+            baseURL: '/',
+          })
+          .then(response => {
+              console.log('respostas')
+              selected_itens = response.data
+              console.log(selected_itens)
+
+              var lv_selected_itens = {};
+              selected_itens.forEach(item=>{
+                var resposta = ""
+                if (['True', 'False'].includes(item.resposta)){
+                  resposta = (item.resposta === 'True');
+                } else {
+                  resposta = item.resposta;
+                }  
+                lv_selected_itens[item.item]=resposta;
+                console.log('resposta: ' + item.item + ' ' + '; reposta: ' + resposta + ' ' + lv_selected_itens[item.item])
+              })
+
+              this.lv_selected_itens=lv_selected_itens;
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+        } 
       },
 
       updateID(id){
@@ -176,7 +201,6 @@ var vm = new Vue({
           msg = {alert_text: 'LV atualizada', alert_title: 'Aviso'}
         }
 
-
         const csrftoken = getCookie('csrftoken');
         console.log(csrftoken)
         console.log(data)
@@ -196,8 +220,6 @@ var vm = new Vue({
         });
         this.edit=false;
       },
-
-
 
       editLV(event){
           targetId = event.currentTarget.id;
