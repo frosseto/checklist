@@ -44,8 +44,9 @@ class GrupoAdmin(admin.ModelAdmin, ExportCsvMixin):
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
-    search_fields = ['nome','descricao']
-    list_display = ['id','nome','descricao','itemtipo','modelo_fk']
+    search_fields = ['id','nome','descricao','itemtipo','modelo_fk','valorpadrao','valor_choice','grupo_fk']
+    list_display = ['id','nome','descricao','itemtipo','modelo_fk','valorpadrao','valor_choice','grupo_fk']
+    list_editable = ['nome','descricao','itemtipo','modelo_fk','valorpadrao','valor_choice','grupo_fk']
 
 
 @admin.register(ListaVerificacao)
