@@ -9,9 +9,9 @@ STATUS_CHOICES = (
     ('Ordem analisada','Ordem analisada'),)
 
 ITEM_TIPOS = (
-    ('checkBox','checkBox'),
-    ('text','text'),
-    ('combobox','combobox'),)
+    ('CHECKBOX','checkbox'),
+    ('TEXT','text'),
+    ('COMBOBOX','combobox'),)
 
 LISTA_VERIFICACAO_STATUS = (
     ('EM_ELABORACAO','Em elaboração'),
