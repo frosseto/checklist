@@ -17,6 +17,9 @@ from .models import (ListaVerificacaoxItemxResposta,
                      ListaVerificacao,
                      Modelo,)
 
+from django.contrib.auth.models import User
+
+
 class modeloViewSet(viewsets.ModelViewSet):
     queryset = Modelo.objects.all()
     serializer_class = modeloSerializer
@@ -74,5 +77,8 @@ def has_group(user, group_name):
     return True if group in user.groups.all() else False
 
 def index(request):
-    return render(request, 'index.html', {})
-
+    user = User.objects.get(username=request.user)
+    args = {
+        'notifications': user.notifications.unread()
+    }
+    return render(request, 'index.html', args)

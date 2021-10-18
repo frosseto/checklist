@@ -14,31 +14,14 @@ from django.contrib.auth.decorators import login_required
 from plotly.offline import plot
 import plotly.graph_objects as go
 import json
-
-
-anp = {'na': 'NA',
-        'detector-fogo':'Fogo',
-        'detector-gas':'Gas',
-        'bdv':'BDV',
-        'adv':'ADV',
-        'adv-teste-seco': 'ADV - Teste Seco',
-        'adv-teste-molhado': 'ADV - Teste Molhado',
-        'sdv':'SDV',
-        'partida-ub':'Partida UB'}
-
-anp_legado = {'NA': 'na',
-              'UB': 'partida-ub',
-              'SDV': 'sdv',
-              'Gas': 'detector-gas',
-              'ADV': 'adv',
-              'Fogo': 'detector-fogo',
-              'BDV': 'detector-gas'}
+from django.contrib.auth.models import User
 
 
 # pesquisar lvs para visualizacao e edicao
 @login_required(login_url='/accounts/login/')
 def checklist_pesquisa(request):
     data = request.GET.copy()
+    user = User.objects.get(username=request.user)
     filtered_qs = listaverificacaoFilter( 
                 data, 
                 ListaVerificacao.objects.all()
@@ -56,7 +39,11 @@ def checklist_pesquisa(request):
     except EmptyPage:
         response = paginator.page(paginator.num_pages)
  
-    args = {'filter': listaverificacao_filter, 'page_obj':response}
+    args = {
+        'filter': listaverificacao_filter, 
+        'page_obj':response, 
+        'notifications': user.notifications.unread()
+        }
     return render(
         request, 
         'checklist_pesquisa_lv_preenchida.html', 
@@ -68,6 +55,7 @@ def checklist_pesquisa(request):
 @login_required(login_url='/accounts/login/')
 def checklist_nova_selecao(request):
     data = request.GET.copy()
+    user = User.objects.get(username=request.user)
     filtered_qs = modeloFilter( 
                 data, 
                 Modelo.objects.all()
@@ -85,7 +73,11 @@ def checklist_nova_selecao(request):
     except EmptyPage:
         response = paginator.page(paginator.num_pages)
  
-    args = {'filter': modelo_filter, 'page_obj':response}
+    args = {
+        'filter': modelo_filter, 
+        'page_obj':response, 
+        'notifications': user.notifications.unread()
+        }
     return render(
         request, 
         'checklist_pesquisa_nova.html', 
@@ -96,7 +88,6 @@ def checklist_nova_selecao(request):
 # criar e salvar lv
 @login_required(login_url='/accounts/login/')
 def checklist_nova(request,pk):
-
     if request.method == 'POST':
 
         data = request.POST 
@@ -123,7 +114,13 @@ def checklist_nova(request,pk):
         res['lv_pk'] = listaverificacao.id
         return JsonResponse(res)
     else:
-        context = {'modelo_pk': pk, 'lv_pk': '', 'acao': 'create'}
+        user = User.objects.get(username=request.user)
+        context = {
+            'modelo_pk': pk, 
+            'lv_pk': '', 
+            'acao': 'create', 
+            'notifications': user.notifications.unread()
+            }
         return render(request, 'checklist_form.html', context)
     
 
@@ -131,10 +128,16 @@ def checklist_nova(request,pk):
 # visualizar e editar lv
 @login_required(login_url='/accounts/login/')
 def checklist(request,pk):
+    user = User.objects.get(username=request.user)
     listaverificacao = ListaVerificacao.objects.get(pk=pk)
     modelo_pk = listaverificacao.modelo_fk.pk
     lv_pk = pk
-    context = {'modelo_pk': modelo_pk, 'lv_pk': lv_pk, 'acao': 'view'}
+    context = {
+        'modelo_pk': modelo_pk, 
+        'lv_pk': lv_pk, 
+        'acao': 'view',
+        'notifications': user.notifications.unread()
+        }
     return render(request, 'checklist_form.html', context)
 
 
@@ -154,7 +157,6 @@ def checklist_delete(request,pk):
 @login_required(login_url='/accounts/login/')
 def checklist_save(request,pk):
     if request.method == 'POST':
-
         data = request.POST 
         lv = json.loads(data.get('lv'))   
         lv_selected_itens = json.loads(data.get('lv_selected_itens'))  
@@ -175,8 +177,6 @@ def checklist_save(request,pk):
                                                               item_fk=item,
                                                               resposta=str(lv_selected_itens[key]))
  
-
-
         res={}
         res['msg'] = 'Sucesso'
         return JsonResponse(res)

@@ -8,11 +8,9 @@ from notifications.signals import notify
 def msg_index(request):
     try:
         users = User.objects.all()
-        print(users)
-        print(request.user)
         user = User.objects.get(username=request.user)
-        return render(request, 'checklist_notificacao.html', {'users': users, 'user': user})
 
+        return render(request, 'checklist_notificacao.html', {'users': users, 'user': user, 'notifications': user.notifications.unread() })
     except Exception as e:
         print(e)
         return HttpResponse("Please login from admin site for sending messages.")

@@ -23,7 +23,7 @@
     </tr>
   </thead>
     {% for user in users  %}
-      {% if request.user != user %}
+      {% if request.user != 'user' %}
         <tbody>
           <tr>
             <th scope="row">{{ user.id }}</th>
