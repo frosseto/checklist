@@ -68,20 +68,25 @@
                                     type="text" 
                                     v-bind:key="item.id" 
                                     v-model="lv_selected_itens[item.id]"
-                                    :placeholder="item.valorpadrao"
                                     :disabled="isDisabled">
 
+                                  </div>
+
+                                  <div v-else-if="item.itemtipo === 'COMBOBOX'">
+                                    
+                                    [[ item.nome ]] 
+                                    
+                                    <select class="mx-2" 
+                                    v-bind:key="item.id"
+                                    v-model="lv_selected_itens[item.id]"
+                                    :disabled="isDisabled">
+                                        <option v-for="option in item.valor_choice.split(';')" v-bind:value="option" v-text="option"></option>
+                                      </select>
                                   </div>
     
                                   <div v-else>
                                     Tipo de controle selecionado no modelo inválido
                                   </div>
-
-                               
-
-
-
-                                
                             </label>
                         </div>
                     </div>
