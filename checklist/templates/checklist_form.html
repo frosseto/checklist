@@ -72,11 +72,11 @@
 
                                   </div>
 
-                                  <div v-else-if="item.itemtipo === 'COMBOBOX'">
+                                  <div class="mx-2" v-else-if="item.itemtipo === 'COMBOBOX'">
                                     
                                     [[ item.nome ]] 
                                     
-                                    <select class="mx-2" 
+                                    <select  
                                     v-bind:key="item.id"
                                     v-model="lv_selected_itens[item.id]"
                                     :disabled="isDisabled">
