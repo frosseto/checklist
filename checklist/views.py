@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django import template
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.shortcuts import render, get_object_or_404
 
 #django rest
@@ -76,13 +76,18 @@ def has_group(user, group_name):
     group = Group.objects.get(name=group_name)
     return True if group in user.groups.all() else False
 
+
 def index(request):
-    user = User.objects.get(username=request.user)
+    print(request.user)
+    notifications = None
+    if request.user:
+        users = User.objects.filter(username=request.user)
+        for user in users:
+            if user:
+                notifications = user.notifications.unread()
+
     
-    if user:
-        notifications = user.notifications.unread()
-    else:
-        notifications = None
+    
 
     args = {
         'notifications': notifications

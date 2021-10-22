@@ -47,3 +47,8 @@ body {
 .label-login{
   color:#014871 !important;
 }
+
+.btn-sao{
+	border-radius: 3px !important; 
+	box-shadow: rgba(0, 0, 0, .4) 0px 0px 8px !important;
+}
