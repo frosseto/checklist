@@ -78,7 +78,13 @@ def has_group(user, group_name):
 
 def index(request):
     user = User.objects.get(username=request.user)
+    
+    if user:
+        notifications = user.notifications.unread()
+    else:
+        notifications = None
+
     args = {
-        'notifications': user.notifications.unread()
+        'notifications': notifications
     }
     return render(request, 'index.html', args)
