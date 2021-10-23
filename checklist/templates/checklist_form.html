@@ -18,92 +18,114 @@
 <br>
 <div class="container-fluid" id="app">
     <div class="row">
-        <div class="col-12">
+        <div class="col-8">
+
+        </div>
+        <div class="col-8">
+            
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-6">
+            <div class="row">
+                <label class="col-auto" for="nome">Título</label>
+                <div class="col">
+                    <input id="nome" 
+                        class="form-control form-control-sm" 
+                        type="text" 
+                        placeholder="Digite o título da LV" 
+                        v-model="lv.nome"
+                        :disabled="isDisabled">
+                <span class="badge badge-secondary">Em preenchimento</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
             <div class="float-right">
                 <button class="btn btn-sm btn-secondary btn-sao mx-1" v-on:click="goBack">Voltar</a>
-                <button v-if="create || edit" id="save-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="saveLV">Salvar</button>
+
+                <button v-if="!create && !edit" id="enviar-aprovacao-lv" class="btn btn-sm btn-success btn-sao float-right mx-1">Env. Aprov.</button>
+                <button v-if="!create && !edit" id="aprovar-lv" class="btn btn-sm btn-success btn-sao float-right mx-1">Aprovar</button>
+                <button v-if="!create && !edit" id="retornar-lv" class="btn btn-sm btn-warning btn-sao float-right mx-1">Retornar Exec.</button>
+
                 <button v-if="!create && !edit" id="edit-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Editar</button>
+                <button v-if="create || edit" id="save-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="saveLV">Salvar</button>
                 <button v-if="!create && edit" id="cancel-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Cancelar</button>
                 <button v-if="!create && !edit" id="delete-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="deleteLV">Apagar</button>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <label for="nome">Título</label>
-            <input id="nome" 
-                   class="form-control form-control-sm" 
-                   type="text" 
-                   placeholder="Digite o título da LV" 
-                   v-model="lv.nome"
-                   :disabled="isDisabled" >
+        <div class="row">
+
         </div>
-            <div class="col-12" v-for="group, groupName in lv_itens_grouped">
-                <div class="card my-2">
-                    <div class="card-header">
-                        [[ groupName ]]
-                    </div>
-                    <div class="card-body">
-                        
-                        <div class='card-text' v-for="item in group">
-                            <label class="row">
+        
+    </div>
+    <div class="row">
+        <div class="col-12" v-for="group, groupName in lv_itens_grouped">
+            <div class="card my-2">
+                <div class="card-header">
+                    [[ groupName ]]
+                </div>
+                <div class="card-body">
+                    
+                    <div class='card-text' v-for="item in group">
+                        <label class="row">
 
-                                <div v-if="item.itemtipo === 'CHECKBOX'">
-                                    
-                                    <input class="mx-2" 
-                                    type="checkbox" 
-                                    v-bind:key="item.id" 
-                                    v-model="lv_selected_itens[item.id]"
-                                    :disabled="isDisabled"> 
+                            <div v-if="item.itemtipo === 'CHECKBOX'">
+                                
+                                <input class="mx-2" 
+                                type="checkbox" 
+                                v-bind:key="item.id" 
+                                v-model="lv_selected_itens[item.id]"
+                                :disabled="isDisabled"> 
 
-                                    [[ item.nome ]] 
+                                [[ item.nome ]] 
 
-                                  </div>
-                                  <div v-else-if="item.itemtipo === 'TEXT'">
-                                    
-                                    [[ item.nome ]] 
+                              </div>
+                              <div v-else-if="item.itemtipo === 'TEXT'">
+                                
+                                [[ item.nome ]] 
 
-                                    <input class="mx-2" 
-                                    type="text" 
-                                    v-bind:key="item.id" 
-                                    v-model="lv_selected_itens[item.id]"
-                                    :disabled="isDisabled">
+                                <input class="mx-2" 
+                                type="text" 
+                                v-bind:key="item.id" 
+                                v-model="lv_selected_itens[item.id]"
+                                :disabled="isDisabled">
 
-                                  </div>
+                              </div>
 
-                                  <div class="mx-2" v-else-if="item.itemtipo === 'COMBOBOX'">
-                                    
-                                    [[ item.nome ]] 
-                                    
-                                    <select  
-                                    v-bind:key="item.id"
-                                    v-model="lv_selected_itens[item.id]"
-                                    :disabled="isDisabled">
-                                        <option v-for="option in item.valor_choice.split(';')" v-bind:value="option" v-text="option"></option>
-                                      </select>
-                                  </div>
-    
-                                  <div v-else>
-                                    Tipo de controle selecionado no modelo inválido
-                                  </div>
-                            </label>
-                        </div>
+                              <div class="mx-2" v-else-if="item.itemtipo === 'COMBOBOX'">
+                                
+                                [[ item.nome ]] 
+                                
+                                <select  
+                                v-bind:key="item.id"
+                                v-model="lv_selected_itens[item.id]"
+                                :disabled="isDisabled">
+                                    <option v-for="option in item.valor_choice.split(';')" v-bind:value="option" v-text="option"></option>
+                                  </select>
+                              </div>
+
+                              <div v-else>
+                                Tipo de controle selecionado no modelo inválido
+                              </div>
+                        </label>
                     </div>
                 </div>
             </div>
-        <div class="col-12">
-            <div class="form-group">
-                <label for="observacao">Observação</label>
-                <textarea class="form-control" 
-                          id="observacao" 
-                          v-model="lv.observacao" 
-                          placeholder="Observações para a LV" 
-                          rows="3"
-                          :disabled="isDisabled"></textarea>
-            </div>  
         </div>
-
+    <div class="col-12">
+        <div class="form-group">
+            <label for="observacao">Observação</label>
+            <textarea class="form-control" 
+                      id="observacao" 
+                      v-model="lv.observacao" 
+                      placeholder="Observações para a LV" 
+                      rows="3"
+                      :disabled="isDisabled"></textarea>
+        </div>  
+    </div>
     </div>
 
 </div>

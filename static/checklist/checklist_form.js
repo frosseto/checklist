@@ -71,7 +71,7 @@ var vm = new Vue({
          modelo:'',
          nome:'',
          observacao:'',
-         status:'',
+         status:'Em preenchimento',
         },
   },
   computed: {
