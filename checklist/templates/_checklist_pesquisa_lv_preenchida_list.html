@@ -5,10 +5,10 @@
   <td style="font-size: x-small;">{{ checklist.nome }}</td>
   <td style="font-size: x-small;">{{ checklist.observacao }}</td>
   <td style="font-size: x-small;">{{ checklist.status }}</td>
-  <td style="font-size: x-small;">{{ checklist.criadopor }}</td>
-  <td style="font-size: x-small;">{{ checklist.criadoem|date:"M d, Y" }}</td>
-  <td style="font-size: x-small;">{{ checklist.modificadopor }}</td>
-  <td style="font-size: x-small;">{{ checklist.modificadoem|date:"d/m/Y" }}</td>
+  <td style="font-size: x-small;">{{ checklist.criadopor|default_if_none:"" }}</td>
+  <td style="font-size: x-small;">{{ checklist.criadoem|date:"d/m/Y H:m" }}</td>
+  <td style="font-size: x-small;">{{ checklist.modificadopor|default_if_none:"" }}</td>
+  <td style="font-size: x-small;">{{ checklist.modificadoem|date:"d/m/Y H:m" }}</td>
 
   <td class="acoes" style="text-align: center;">
     <a type="" class="m-0 p-1" href="{% url 'checklist' checklist.id %}">
