@@ -36,12 +36,17 @@
     </h6>
 
     {% for notification in  notifications %}
-    <a class="dropdown-item d-flex align-items-center" href="#">
-      <div class="mr-3">
-          <i class="fas fa-file-alt"></i>
-      </div>
+    <a class="dropdown-item d-flex align-items-left" 
+    {% if notification.notificationcta.cta_link %}
+      href="checklist/{{notification.notificationcta}}">
+    {% else %}
+      href="#">
+    {% endif %}
       <div>
-        <div class="small text-gray-500">{{ notification.actor }}</div>
+        <div>
+          <i class="fas fa-file-alt"></i>
+          <span class="small text-gray-500">{{ notification.actor }}</span>
+        </div>
         <span class="font-weight-bold">{{ notification.description }}</span>
       </div>
     </a>

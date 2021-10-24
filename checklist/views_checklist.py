@@ -132,6 +132,12 @@ def checklist(request,pk):
     listaverificacao = ListaVerificacao.objects.get(pk=pk)
     modelo_pk = listaverificacao.modelo_fk.pk
     lv_pk = pk
+
+    notifications = user.notifications.unread().filter(notificationcta__cta_link="48")
+    for n in notifications:
+        print(n)
+        n.delete()
+
     context = {
         'modelo_pk': modelo_pk, 
         'lv_pk': lv_pk, 

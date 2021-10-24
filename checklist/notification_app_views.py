@@ -22,7 +22,9 @@ def message(request):
             sender = User.objects.get(username=request.user)
             receiver = User.objects.get(id=request.POST.get('user_id'))
             print(sender, receiver, request.POST.get('message'))
-            notify.send(sender, recipient=receiver, verb='Message', description=request.POST.get('message'))
+            notify.send(sender, recipient=receiver, verb='Message', description=request.POST.get('message'),
+            cta_link='48')
+            
             return redirect('/msg')
         else:
             return HttpResponse("Invalid request")

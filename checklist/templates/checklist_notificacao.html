@@ -42,6 +42,20 @@
     {% endfor %}
 </table>
 
+<div id="app"></div>
 
 {% endblock %}
+
+
+
+
+{% block js %}
+
+<script type="text/javascript" src="{% static 'src/vue/dist/js/chunk-vendors.js' %}"></script>
+<script type="text/javascript" src="{% static 'src/vue/dist/js/app.js' %}"></script>
+
+{% endblock js %} 
+
+
+
 
