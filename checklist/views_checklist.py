@@ -15,6 +15,7 @@ from plotly.offline import plot
 import plotly.graph_objects as go
 import json
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 # pesquisar lvs para visualizacao e edicao
@@ -95,10 +96,13 @@ def checklist_nova(request,pk):
         lv_selected_itens = json.loads(data.get('lv_selected_itens'))  
 
         modelo=Modelo.objects.get(pk=lv['modelo'])
+
         listaverificacao=ListaVerificacao.objects.create(modelo_fk=modelo,
                                                          nome=lv['nome'],
                                                          observacao=lv['observacao'],
-                                                         status=lv['status'])
+                                                         status=lv['status'],
+                                                         criadopor = request.user,
+                                                         criadoem=datetime.now())
         listaverificacao.save()
 
         print(lv_selected_itens)
@@ -170,6 +174,12 @@ def checklist_save(request,pk):
         listaverificacao = ListaVerificacao.objects.get(pk=lv['id'])
         listaverificacao.nome = lv['nome']
         listaverificacao.observacao = lv['observacao']
+        
+        print('criadopor',listaverificacao.criadopor)
+
+        listaverificacao.modificadopor = request.user
+        listaverificacao.modificadoem = datetime.now()
+
         listaverificacao.save()
 
         print(lv_selected_itens)

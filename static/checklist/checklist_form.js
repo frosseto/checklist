@@ -193,7 +193,7 @@ var vm = new Vue({
 
         if(this.lv['id']==''){
           url=''        
-          msg = {alert_text: 'LV criada:', alert_title: 'Aviso'}
+          msg = {alert_text: 'LV criada', alert_title: 'Aviso'}
           this.create=false
         }
         else{
