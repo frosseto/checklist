@@ -67,9 +67,9 @@ class ListaVerificacao(models.Model):
     nome = models.CharField(db_column='Nome', max_length=255, blank=True, null=True)
     observacao = models.CharField(db_column='Observacao', max_length=1024, blank=True, null=True)
     criadopor = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True, on_delete=models.SET_NULL)
-    criadaem = models.DateTimeField(db_column='CriadoEm', default=now, blank=True, null=True)
+    criadoem = models.DateTimeField(db_column='CriadoEm', blank=True, null=True)
     modificadopor = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
-    modificadoem = models.DateTimeField(db_column='ModificadoEm', default=now, blank=True, null=True)
+    modificadoem = models.DateTimeField(db_column='ModificadoEm', blank=True, null=True)
     modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
     status = models.CharField(db_column='Status', max_length=50, blank=True, null=True, choices=LISTA_VERIFICACAO_STATUS)
     def save_model(self, request, obj, form, change):
