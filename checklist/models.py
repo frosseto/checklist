@@ -54,8 +54,8 @@ class Item(models.Model):
     descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
     itemtipo = models.CharField(db_column='ItemTipo', max_length=50, blank=True, null=True, choices=ITEM_TIPOS)
     modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
-    valorpadrao = models.CharField(models.DO_NOTHING, db_column="ValorPadrao", max_length=100, blank=True, null=True)
-    valor_choice = models.CharField(models.DO_NOTHING, db_column="ValorChoice", max_length=255, blank=True, null=True)
+    valorpadrao = models.CharField(db_column="ValorPadrao", max_length=100, blank=True, null=True)
+    valor_choice = models.CharField(db_column="ValorChoice", max_length=255, blank=True, null=True)
     grupo_fk = models.ForeignKey(Grupo, models.DO_NOTHING, db_column="Grupo_FK", blank=True, null=True)
     
     class Meta:
@@ -87,7 +87,7 @@ class ListaVerificacaoxItemxResposta(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     listaverificacao_fk = models.ForeignKey(ListaVerificacao, models.DO_NOTHING, db_column="ListaVerificacao_FK", blank=True, null=True)
     item_fk = models.ForeignKey(Item, models.DO_NOTHING, db_column="Item_FK", blank=True, null=True)
-    resposta = models.CharField(models.DO_NOTHING, db_column="Resposta", max_length=100, blank=True, null=True)
+    resposta = models.CharField(db_column="Resposta", max_length=100, blank=True, null=True)
 
     class Meta:
         managed = True
