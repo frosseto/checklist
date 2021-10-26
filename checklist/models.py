@@ -17,10 +17,9 @@ ITEM_TIPOS = (
     ('COMBOBOX','combobox'),)
 
 LISTA_VERIFICACAO_STATUS = (
-    ('EM_ELABORACAO','Em elaboração'),
-    ('AGUARDANDO_APROVADOR','Aguardando Aprovador'),
-    ('AGUARDANDO_ANALISTA','Aguardando Analista'),
-    ('APROVADA','Aprovada'),)
+    ('Em elaboração','Em elaboração'),
+    ('Aguardando Aprovador','Aguardando Aprovador'),
+    ('Aprovada','Aprovada'),)
 
 # Checklist
 

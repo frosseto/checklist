@@ -37,7 +37,7 @@
                         placeholder="Digite o título da LV" 
                         v-model="lv.nome"
                         :disabled="isDisabled">
-                <span class="badge badge-secondary">Em preenchimento</span>
+                <span class="badge badge-secondary">[[ lv.status ]]</span>
                 </div>
             </div>
         </div>
@@ -45,14 +45,25 @@
             <div class="float-right">
                 <button class="btn btn-sm btn-secondary btn-sao mx-1" v-on:click="goBack">Voltar</a>
 
-                <button v-if="!create && !edit" id="enviar-aprovacao-lv" class="btn btn-sm btn-success btn-sao float-right mx-1">Env. Aprov.</button>
-                <button v-if="!create && !edit" id="aprovar-lv" class="btn btn-sm btn-success btn-sao float-right mx-1">Aprovar</button>
-                <button v-if="!create && !edit" id="retornar-lv" class="btn btn-sm btn-warning btn-sao float-right mx-1">Retornar Exec.</button>
+                <button v-if="(!create && !edit) && (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')" 
+                id="enviar-aprovacao-lv" 
+                class="btn btn-sm btn-success btn-sao float-right mx-1" 
+                v-on:click="acaoLV($event)">
+                Env. Aprov.
+                </button>
+                <button v-if="!create && !edit && (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador')" 
+                        id="aprovar-lv" class="btn btn-sm btn-success btn-sao float-right mx-1" v-on:click="acaoLV($event)">Aprovar</button>
+                <button v-if="!create && !edit && (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador')" 
+                        id="retornar-lv" class="btn btn-sm btn-warning btn-sao float-right mx-1" v-on:click="acaoLV($event)">Retornar Exec.</button>
 
-                <button v-if="!create && !edit" id="edit-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Editar</button>
-                <button v-if="create || edit" id="save-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="saveLV">Salvar</button>
-                <button v-if="!create && edit" id="cancel-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Cancelar</button>
-                <button v-if="!create && !edit" id="delete-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="deleteLV">Apagar</button>
+                <button v-if="(!create && !edit) && (   (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador') || (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')  )" 
+                        id="edit-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Editar</button>
+                <button v-if="create || edit && (   (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador') || (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')  )" 
+                        id="save-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="saveLV">Salvar</button>
+                <button v-if="!create && edit && (   (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador') || (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')  )"
+                        id="cancel-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Cancelar</button>
+                <button v-if="!create && !edit && (   (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador') || (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')  )"
+                        id="delete-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="deleteLV">Apagar</button>
             </div>
         </div>
 
@@ -123,7 +134,7 @@
                       v-model="lv.observacao" 
                       placeholder="Observações para a LV" 
                       rows="3"
-                      :disabled="isDisabled"></textarea>
+                      :disabled="isDisabledObs"></textarea>
         </div>  
     </div>
     </div>
@@ -147,6 +158,8 @@
 
 {{ modelo_pk|json_script:"modelo_pk" }}
 {{ lv_pk|json_script:"lv_pk" }}
+{{ grupo_acesso|json_script:"grupo_acesso" }}
+
 <script>
     const modelo_pk = JSON.parse(document.getElementById('modelo_pk').textContent);
     const lv_pk = JSON.parse(document.getElementById('lv_pk').textContent);

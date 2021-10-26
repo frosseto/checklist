@@ -142,11 +142,17 @@ def checklist(request,pk):
         print(n)
         n.delete()
 
+    l = user.groups.all().first()
+    if l:
+        grupo_acesso = l.name
+    else:
+        grupo_acesso = ''
     context = {
         'modelo_pk': modelo_pk, 
         'lv_pk': lv_pk, 
         'acao': 'view',
-        'notifications': user.notifications.unread()
+        'notifications': user.notifications.unread(),
+        'grupo_acesso': grupo_acesso
         }
     return render(request, 'checklist_form.html', context)
 
@@ -174,6 +180,8 @@ def checklist_save(request,pk):
         listaverificacao = ListaVerificacao.objects.get(pk=lv['id'])
         listaverificacao.nome = lv['nome']
         listaverificacao.observacao = lv['observacao']
+        print(lv['status'])
+        listaverificacao.status=lv['status']
         
         print('criadopor',listaverificacao.criadopor)
 

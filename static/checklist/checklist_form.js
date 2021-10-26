@@ -66,12 +66,13 @@ var vm = new Vue({
     create: false,
     lv_itens : {},
     lv_selected_itens: {},
+    grupo_acesso: '',
     lv: {
          id: '',
          modelo:'',
          nome:'',
          observacao:'',
-         status:'Em preenchimento',
+         status:'Em elaboração',
         },
   },
   computed: {
@@ -81,8 +82,23 @@ var vm = new Vue({
     },
 
     isDisabled() {
-      return !(this.create || this.edit);
+      if (this.grupo_acesso=='Executante' && this.lv['status']=='Em elaboração'){
+        return !(this.create || this.edit);
+      }
+      else{
+        return true;
+      }
     },
+
+    isDisabledObs() {
+      if (  (this.grupo_acesso=='Executante' && this.lv['status']=='Em elaboração') ||
+            (this.grupo_acesso=='Aprovador' && this.lv['status']=='Aguardando Aprovador')  ){
+        return !(this.create || this.edit);
+      } else {
+        return true;
+      }
+    },
+
 
   },
     methods:{
@@ -142,6 +158,7 @@ var vm = new Vue({
               console.log(response.data);
               this.lv['nome']=lv['nome']
               this.lv['observacao']=lv['observacao']
+              this.lv['status']=lv['status']
           })
           .catch(function (error) {
               console.log(error);
@@ -227,6 +244,17 @@ var vm = new Vue({
           this.edit = !this.edit;
       },
 
+      acaoLV(event){
+        targetId = event.currentTarget.id;
+        acao_status = {'retornar-lv':'Em elaboração',
+                       'enviar-aprovacao-lv': 'Aguardando Aprovador',
+                       'aprovar-lv': 'Aprovada',
+                      };
+        this.lv['status']= acao_status[targetId]
+        console.log(this.lv['status'])
+        this.saveLV();
+      },
+
       deleteLV(){
         console.log('Delete LV')
         url = '/checklist/' + this.lv['id'] + '/delete/'
@@ -249,6 +277,7 @@ var vm = new Vue({
 
   },
   created: function(){
+    this.grupo_acesso=grupo_acesso.text.replace(/"/g,"");;
     this.create=lv_pk==='';
     this.getLV()
 }
