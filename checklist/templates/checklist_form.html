@@ -89,7 +89,7 @@
                                 type="checkbox" 
                                 v-bind:key="item.id" 
                                 v-model="lv_selected_itens[item.id]"
-                                :disabled="isDisabled || editavel===False"> 
+                                :disabled="isDisabled || item.editavel===False"> 
 
                                 [[ item.nome ]] 
 
@@ -102,7 +102,7 @@
                                 type="text" 
                                 v-bind:key="item.id" 
                                 v-model="lv_selected_itens[item.id]"
-                                :disabled="isDisabled || editavel===False">
+                                :disabled="isDisabled || item.editavel===False">
 
                               </div>
 
@@ -113,7 +113,7 @@
                                 <select  
                                 v-bind:key="item.id"
                                 v-model="lv_selected_itens[item.id]"
-                                :disabled="isDisabled || editavel===False">
+                                :disabled="isDisabled || item.editavel===False">
                                     <option v-for="option in item.valor_choice.split(';')" v-bind:value="option" v-text="option"></option>
                                   </select>
                               </div>
