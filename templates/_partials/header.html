@@ -66,12 +66,15 @@
   <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     {{ user.get_username|upper }}
     {% if user.is_superuser %}
-      (Admin)
+      Admin
     {% else %}
-      {% if request.user|has_group:"sao-analista" %} 
-        (Analista)
-      {% else %} 
-      {% endif %}
+    {% endif %}
+
+    {% if request.user|has_group:"Executante" %} 
+    (Executante)
+    {% elif request.user|has_group:"Aprovador" %}
+    (Aprovador)
+    {% else %}
     {% endif %}
     &nbsp;
   </a>
