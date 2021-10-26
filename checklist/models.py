@@ -56,6 +56,7 @@ class Item(models.Model):
     valorpadrao = models.CharField(db_column="ValorPadrao", max_length=100, blank=True, null=True)
     valor_choice = models.CharField(db_column="ValorChoice", max_length=255, blank=True, null=True)
     grupo_fk = models.ForeignKey(Grupo, models.DO_NOTHING, db_column="Grupo_FK", blank=True, null=True)
+    editavel = models.BooleanField(db_column='Editavel', blank=False, null=True)
     
     class Meta:
         managed = True
@@ -94,6 +95,7 @@ class ListaVerificacaoxItemxResposta(models.Model):
 
 
 class NotificationCTA(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)
     notification = models.OneToOneField(Notification, on_delete=models.CASCADE)
     cta_link = models.CharField(max_length=200, blank=True)
 
