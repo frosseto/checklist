@@ -38,7 +38,7 @@
     {% for notification in  notifications %}
     <a class="dropdown-item d-flex align-items-left" 
     {% if notification.notificationcta.cta_link %}
-      href="checklist/{{notification.notificationcta}}">
+      href="/checklist/{{notification.notificationcta}}">
     {% else %}
       href="#">
     {% endif %}

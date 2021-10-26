@@ -3,6 +3,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import (Item, ListaVerificacaoxItemxResposta,
                      Modelo,
                      ListaVerificacao)
+from notifications.models import Notification
+
 from .filters import (modeloFilter,
                       listaverificacaoFilter,)
 from django.http import JsonResponse
@@ -16,6 +18,7 @@ import plotly.graph_objects as go
 import json
 from django.contrib.auth.models import User
 from datetime import datetime
+from notifications.signals import notify
 
 
 # pesquisar lvs para visualizacao e edicao
@@ -137,11 +140,6 @@ def checklist(request,pk):
     modelo_pk = listaverificacao.modelo_fk.pk
     lv_pk = pk
 
-    notifications = user.notifications.unread().filter(notificationcta__cta_link="48")
-    for n in notifications:
-        print(n)
-        n.delete()
-
     l = user.groups.all().first()
     if l:
         grupo_acesso = l.name
@@ -177,7 +175,49 @@ def checklist_save(request,pk):
         lv = json.loads(data.get('lv'))   
         lv_selected_itens = json.loads(data.get('lv_selected_itens'))  
 
+        user = User.objects.get(username=request.user)
+        l = user.groups.all().first()
+        if l:
+            grupo_acesso = l.name
+        else:
+            grupo_acesso = ''
+
+        print(grupo_acesso, lv['status'])
+
+        sender = User.objects.get(username=request.user)
         listaverificacao = ListaVerificacao.objects.get(pk=lv['id'])
+
+        if grupo_acesso=='Aprovador' and lv['status']=='Aprovada':
+            notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
+            for n in notifications:
+                n.delete()
+        elif grupo_acesso=='Aprovador' and lv['status']=='Em elaboração':
+            print(listaverificacao.criadopor)
+            notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
+            for n in notifications:
+                n.delete()
+            receiver = User.objects.get(username=listaverificacao.criadopor)
+            notify.send(sender, 
+                        recipient=receiver, 
+                        verb='Message', 
+                        description=f"LV {lv['id']} devolvida pelo aprovador",
+                        cta_link=lv['id'])
+        elif grupo_acesso=='Executante' and lv['status']=='Aguardando Aprovador':
+            notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
+            for n in notifications:
+                n.delete()
+            users = User.objects.filter(groups__name='Aprovador')
+            for user in users:
+                receiver = user
+                notify.send(sender, 
+                            recipient=receiver, 
+                            verb='Message', 
+                            description=f"LV {lv['id']} aguardando aprovador",
+                            cta_link=lv['id'])
+        else:
+            pass
+    
+        
         listaverificacao.nome = lv['nome']
         listaverificacao.observacao = lv['observacao']
         print(lv['status'])
@@ -208,7 +248,6 @@ def checklist_save(request,pk):
         res={}
         res['msg'] = 'Sucesso'
         return JsonResponse(res)
-
 
 
 

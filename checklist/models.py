@@ -96,7 +96,7 @@ class ListaVerificacaoxItemxResposta(models.Model):
 
 
 class NotificationCTA(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)
+    #id = models.AutoField(db_column='ID', primary_key=True)
     notification = models.OneToOneField(Notification, on_delete=models.CASCADE)
     cta_link = models.CharField(max_length=200, blank=True)
 

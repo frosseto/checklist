@@ -85,6 +85,8 @@ def index(request):
         for user in users:
             if user:
                 notifications = user.notifications.unread()
+                for notification in notifications:
+                    print(notification)
 
     
     
