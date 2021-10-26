@@ -56,7 +56,8 @@ class Item(models.Model):
     valorpadrao = models.CharField(db_column="ValorPadrao", max_length=100, blank=True, null=True)
     valor_choice = models.CharField(db_column="ValorChoice", max_length=255, blank=True, null=True)
     grupo_fk = models.ForeignKey(Grupo, models.DO_NOTHING, db_column="Grupo_FK", blank=True, null=True)
-    editavel = models.BooleanField(db_column='Editavel', blank=False, null=True)
+    editavel = models.BooleanField(db_column='Editavel', blank=False, null=False,default=True)
+
     
     class Meta:
         managed = True

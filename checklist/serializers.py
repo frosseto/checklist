@@ -37,7 +37,7 @@ class itemSerializer(serializers.HyperlinkedModelSerializer):
     grupo = serializers.CharField(source='grupo_fk.nome')
     class Meta:
         model = Item
-        fields = ['id', 'nome','descricao','modelo','grupo','itemtipo','valorpadrao','valor_choice']
+        fields = ['id', 'nome','descricao','modelo','grupo','itemtipo','valorpadrao','valor_choice','editavel']
 
 
 class modeloSerializer(serializers.HyperlinkedModelSerializer):
