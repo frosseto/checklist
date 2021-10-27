@@ -1,0 +1,11 @@
+table td{
+    font-size: .9rem;
+}
+
+.selected {
+    background-color:red;
+}
+table {
+    padding:0px;
+    border-collapse: collapse;
+}

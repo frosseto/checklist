@@ -1,0 +1,19 @@
+html, body {
+    height: 100vh;
+}
+
+.btn-sao{
+	border-radius: 3px !important; 
+	box-shadow: rgba(0, 0, 0, .4) 0px 0px 8px !important;
+}
+
+tr td,th{
+	padding: 1px 5px 1px 5px !important;
+	margin: 0 !important;
+}
+
+table th{
+	text-align: center;
+}
+
+
