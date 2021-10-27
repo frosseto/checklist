@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.http import HttpResponse
 import csv
-from checklist.models import (Modelo,
+from checklist.models import (Acesso, Modelo,
                               Grupo,
                               Item,
                               ListaVerificacao,
@@ -24,7 +24,7 @@ class ExportCsvMixin:
 
         return response
 
-    export_as_csv.short_description = "Export Selected"
+    export_as_csv.short_description = "Exportar itens selecionados"
 
 
 @admin.register(Modelo)
@@ -40,6 +40,10 @@ class GrupoAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ['id','nome','descricao']
     #exclude = ['criadopor','criadoem','modificadopor','modificadoem']
 
+@admin.register(Acesso)
+class AcessoAdmin(admin.ModelAdmin, ExportCsvMixin):
+    search_fields = ['modelo_fk','usuario_fk','grupo_fk']
+    list_display = ['modelo_fk','usuario_fk','grupo_fk']
 
 
 @admin.register(Item)
@@ -56,6 +60,7 @@ class ListaVerificacaoadmin(admin.ModelAdmin):
     list_editable = ['nome','observacao','criadopor','modelo_fk','status']
 
 
+#Remover as respostas do admin, na versão final
 @admin.register(ListaVerificacaoxItemxResposta)
 class ListaVerificacaoxItemxRespostaadmin(admin.ModelAdmin):
     search_fields = ['listaverificacao_fk','item_fk','resposta']

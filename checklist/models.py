@@ -5,7 +5,7 @@ from django.utils.timezone import now
 from notifications.models import notify_handler
 from notifications.signals import notify
 from notifications.models import Notification
-
+from django.contrib.auth.models import User,Permission,Group
 
 STATUS_CHOICES = (
     ('Aguardando analista','Aguardando analista'),
@@ -46,6 +46,17 @@ class Grupo(models.Model):
 
     def __str__(self):
         return self.nome
+
+class Acesso(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)
+    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=False, null=False)
+    usuario_fk = models.ForeignKey(User, models.CASCADE, db_column="Usuario_FK", blank=False, null=False)
+    grupo_fk = models.ForeignKey(Group, models.CASCADE, db_column="Grupo_FK", blank=False, null=False)
+    
+    class Meta:
+        managed = True
+        db_table = 'Acesso'
+
 
 class Item(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
