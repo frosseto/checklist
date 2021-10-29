@@ -82,7 +82,7 @@ var vm = new Vue({
     },
 
     isDisabled() {
-      if (this.grupo_acesso=='Executante' && this.lv['status']=='Em elaboração'){
+      if ((this.grupo_acesso=='Executante' || this.grupo_acesso=='Criador') && this.lv['status']=='Em elaboração'){
         return !(this.create || this.edit);
       }
       else{
@@ -277,8 +277,9 @@ var vm = new Vue({
 
   },
   created: function(){
-    this.grupo_acesso=grupo_acesso.text.replace(/"/g,"");;
+    this.grupo_acesso=grupo_acesso.text.replace(/"/g,"");
     this.create=lv_pk==='';
+    if (this.create===true) {this.grupo_acesso='Criador'};
     this.getLV()
 }
 })
