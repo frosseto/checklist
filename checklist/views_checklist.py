@@ -140,11 +140,16 @@ def checklist(request,pk):
     modelo_pk = listaverificacao.modelo_fk.pk
     lv_pk = pk
 
-    l = user.groups.all().first()
+    #l = user.groups.all().first()
+    l=[]
+    for g in request.user.groups.all():
+        l.append(g.name)
+    
     if l:
-        grupo_acesso = l.name
+        grupo_acesso = l
     else:
         grupo_acesso = ''
+    
     context = {
         'modelo_pk': modelo_pk, 
         'lv_pk': lv_pk, 
@@ -176,9 +181,12 @@ def checklist_save(request,pk):
         lv_selected_itens = json.loads(data.get('lv_selected_itens'))  
 
         user = User.objects.get(username=request.user)
-        l = user.groups.all().first()
+        #l = user.groups.all().first()
+        l=[]
+        for g in request.user.groups.all():
+            l.append(g.name)
         if l:
-            grupo_acesso = l.name
+            grupo_acesso = l
         else:
             grupo_acesso = ''
 
@@ -186,12 +194,12 @@ def checklist_save(request,pk):
 
         sender = User.objects.get(username=request.user)
         listaverificacao = ListaVerificacao.objects.get(pk=lv['id'])
-
-        if grupo_acesso=='Aprovador' and lv['status']=='Aprovada':
+        print(grupo_acesso)
+        if 'Aprovador' in grupo_acesso and lv['status']=='Aprovada':
             notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
             for n in notifications:
                 n.delete()
-        elif grupo_acesso=='Aprovador' and lv['status']=='Em elaboração':
+        elif 'Aprovador' in grupo_acesso and lv['status']=='Em elaboração':
             print(listaverificacao.criadopor)
             notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
             for n in notifications:
@@ -202,7 +210,7 @@ def checklist_save(request,pk):
                         verb='Message', 
                         description=f"LV {lv['id']} devolvida pelo aprovador",
                         cta_link=lv['id'])
-        elif grupo_acesso=='Executante' and lv['status']=='Aguardando Aprovador':
+        elif 'Executante' in grupo_acesso and lv['status']=='Aguardando Aprovador':
             notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
             for n in notifications:
                 n.delete()

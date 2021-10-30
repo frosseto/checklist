@@ -82,7 +82,7 @@ var vm = new Vue({
     },
 
     isDisabled() {
-      if ((this.grupo_acesso=='Executante' || this.grupo_acesso=='Criador') && this.lv['status']=='Em elaboração'){
+      if ((this.grupo_acesso.includes('Executante') || this.grupo_acesso.includes('Criador')) && this.lv['status']=='Em elaboração'){
         return !(this.create || this.edit);
       }
       else{
@@ -91,8 +91,8 @@ var vm = new Vue({
     },
 
     isDisabledObs() {
-      if (  (this.grupo_acesso=='Executante' && this.lv['status']=='Em elaboração') ||
-            (this.grupo_acesso=='Aprovador' && this.lv['status']=='Aguardando Aprovador')  ){
+      if (  (this.grupo_acesso.includes('Executante') && this.lv['status']=='Em elaboração') ||
+            (this.grupo_acesso.includes('Aprovador') && this.lv['status']=='Aguardando Aprovador')  ){
         return !(this.create || this.edit);
       } else {
         return true;

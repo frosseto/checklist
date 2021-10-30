@@ -45,24 +45,24 @@
             <div class="float-right">
                 <button class="btn btn-sm btn-secondary btn-sao mx-1" v-on:click="goBack">Voltar</a>
 
-                <button v-if="(!create && !edit) && (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')" 
+                <button v-if="(!create && !edit) && (grupo_acesso.includes('Executante') && lv.status == 'Em elaboração')" 
                 id="enviar-aprovacao-lv" 
                 class="btn btn-sm btn-success btn-sao float-right mx-1" 
                 v-on:click="acaoLV($event)">
                 Env. Aprov.
                 </button>
-                <button v-if="!create && !edit && (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador')" 
+                <button v-if="!create && !edit && (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador')" 
                         id="aprovar-lv" class="btn btn-sm btn-success btn-sao float-right mx-1" v-on:click="acaoLV($event)">Aprovar</button>
-                <button v-if="!create && !edit && (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador')" 
+                <button v-if="!create && !edit && (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador')" 
                         id="retornar-lv" class="btn btn-sm btn-warning btn-sao float-right mx-1" v-on:click="acaoLV($event)">Retornar Exec.</button>
 
-                <button v-if="(!create && !edit) && (   (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador') || (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')  )" 
+                <button v-if="(!create && !edit) && (   (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador') || (grupo_acesso.includes('Executante') && lv.status == 'Em elaboração')  )" 
                         id="edit-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Editar</button>
-                <button v-if="create || edit && (   (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador') || (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')  )" 
+                <button v-if="create || edit && (   (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador') || (grupo_acesso.includes('Executante') && lv.status == 'Em elaboração')  )" 
                         id="save-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="saveLV">Salvar</button>
-                <button v-if="!create && edit && (   (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador') || (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')  )"
+                <button v-if="!create && edit && (   (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador') || (grupo_acesso.includes('Executante') && lv.status == 'Em elaboração')  )"
                         id="cancel-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Cancelar</button>
-                <button v-if="!create && !edit && (   (grupo_acesso == 'Aprovador' && lv.status == 'Aguardando Aprovador') || (grupo_acesso == 'Executante' && lv.status == 'Em elaboração')  )"
+                <button v-if="!create && !edit && (   (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador') || (grupo_acesso.includes('Executante') && lv.status == 'Em elaboração')  )"
                         id="delete-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="deleteLV">Apagar</button>
             </div>
         </div>
