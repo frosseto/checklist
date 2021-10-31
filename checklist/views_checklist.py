@@ -27,7 +27,6 @@ def checklist_pesquisa(request):
                 data, 
                 ListaVerificacao.objects.all().order_by('-modificadoem','-criadoem')
             ).qs
-    
     page = request.GET.get('page', 1)
     print(request.GET)
     listaverificacao_filter = listaverificacaoFilter(request.GET, queryset=filtered_qs)
@@ -166,6 +165,9 @@ def checklist_delete(request,pk):
     listaverificacaoxitemxresposta = ListaVerificacaoxItemxResposta.objects.filter(listaverificacao_fk__id=pk)
     listaverificacaoxitemxresposta.delete()
     listaverificacao.delete()
+    notifications = Notification.objects.filter(notificationcta__cta_link=pk)
+    for n in notifications:
+        n.delete()
     res={}
     res['msg'] = 'Sucesso'
     return JsonResponse(res)
@@ -202,9 +204,8 @@ def checklist_save(request,pk):
             notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
             for n in notifications:
                 n.delete()
-                #TODO: Alterar do criado por para quem enviou para aprovacao
-                #No momento de salvar a primeira modificacao esse campo está vazio
-            receiver = User.objects.get(username=listaverificacao.criadopor)
+            
+            receiver = User.objects.get(username=listaverificacao.modificadopor if listaverificacao.modificadopor != '' else listaverificacao.criadopor)
             notify.send(sender, 
                         recipient=receiver, 
                         verb='Message', 

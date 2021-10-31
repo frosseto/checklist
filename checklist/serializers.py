@@ -62,7 +62,8 @@ class listaverificacaoSerializer(serializers.HyperlinkedModelSerializer):
         lv.modelo_fk=modelo
         lv.save()
         return lv
-
+        # return ListaVerificacao.objects.create(**validated_data)
+        
 
 
 
