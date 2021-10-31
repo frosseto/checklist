@@ -1,24 +1,21 @@
-from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import (Item, ListaVerificacaoxItemxResposta,
-                     Modelo,
-                     ListaVerificacao)
-from notifications.models import Notification
-
-from .filters import (modeloFilter,
-                      listaverificacaoFilter,)
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_protect
-from django.db import connection
-from django.http import HttpResponseRedirect
-from django.utils import timezone
-from django.contrib.auth.decorators import login_required
-from plotly.offline import plot
-import plotly.graph_objects as go
 import json
-from django.contrib.auth.models import User
 from datetime import datetime
+
+import plotly.graph_objects as go
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import connection
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_protect
+from notifications.models import Notification
 from notifications.signals import notify
+from plotly.offline import plot
+
+from .filters import listaverificacaoFilter, modeloFilter
+from .models import (Item, ListaVerificacao, ListaVerificacaoxItemxResposta, Modelo)
 
 
 # pesquisar lvs para visualizacao e edicao
@@ -28,7 +25,7 @@ def checklist_pesquisa(request):
     user = User.objects.get(username=request.user)
     filtered_qs = listaverificacaoFilter( 
                 data, 
-                ListaVerificacao.objects.all()
+                ListaVerificacao.objects.all().order_by('-modificadoem','-criadoem')
             ).qs
     
     page = request.GET.get('page', 1)
@@ -142,6 +139,7 @@ def checklist(request,pk):
 
     #l = user.groups.all().first()
     l=[]
+    #print(list(request.user.groups.all().values_list('name', flat=True)))
     for g in request.user.groups.all():
         l.append(g.name)
     
@@ -204,6 +202,8 @@ def checklist_save(request,pk):
             notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
             for n in notifications:
                 n.delete()
+                #TODO: Alterar do criado por para quem enviou para aprovacao
+                #No momento de salvar a primeira modificacao esse campo está vazio
             receiver = User.objects.get(username=listaverificacao.criadopor)
             notify.send(sender, 
                         recipient=receiver, 
@@ -225,17 +225,13 @@ def checklist_save(request,pk):
         else:
             pass
     
-        
         listaverificacao.nome = lv['nome']
         listaverificacao.observacao = lv['observacao']
-        print(lv['status'])
+        #print(lv['status'])
         listaverificacao.status=lv['status']
-        
-        print('criadopor',listaverificacao.criadopor)
-
+        #print('criadopor',listaverificacao.criadopor)
         listaverificacao.modificadopor = request.user
         listaverificacao.modificadoem = datetime.now()
-
         listaverificacao.save()
 
         print(lv_selected_itens)
@@ -260,6 +256,8 @@ def checklist_save(request,pk):
 
 
 from . import relatorio_dash_app
+
+
 @login_required(login_url='/accounts/login/')
 def checklist_relatorio(request):
 	def scatter():
