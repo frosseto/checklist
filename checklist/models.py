@@ -7,6 +7,7 @@ from notifications.signals import notify
 from notifications.models import Notification
 from django.contrib.auth.models import User,Permission,Group
 from guardian.shortcuts import assign_perm
+from checklist.settings import PERFIL_APROVADOR, PERFIL_EXECUTANTE, PERFIL_MODELADOR,PERFIL_CONSULTA
 
         
 
@@ -27,8 +28,8 @@ LISTA_VERIFICACAO_STATUS = (
 LISTA_PERFIS = (
     ('EXECUTANTE','Executante'),
     ('APROVADOR','Aprovador'),
-    ('CRIADOR','Criador de modelo'),
-    ('Exibidor','Exibidor'),)
+    ('MODELADOR','Criador de modelo'),
+    ('COLSULTA','Exibidor'),)
 
 # Checklist
 
@@ -40,7 +41,10 @@ class Modelo(models.Model):
     class Meta:
         managed = True
         db_table = 'Modelo'
-        permissions = [('can_edit_lv', 'Pode editar LV'),('can_approve_lv', 'Pode aprovar LV')]
+        permissions = [('EXECUTANTE', 'Pode editar LV'),
+                       ('MODELADOR', 'Pode editar modelo'),
+                       ('CONSULTA', 'Pode visualizar LV'),
+                       ('APROVADOR', 'Pode aprovar LV')]
 
     def __str__(self):
         return self.nome
@@ -70,8 +74,20 @@ class Acesso(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             super(Acesso, self).save(*args, **kwargs)    
-            group = Group.objects.get(name=self.grupo_fk)
-            assign_perm('checklist.can_approve_lv', group, Modelo.objects.get(nome=self.modelo_fk))    
+            
+            permissao=''
+            if self.perfil=='APROVADOR':
+                permissao=PERFIL_APROVADOR
+            elif self.perfil=='EXECUTANTE':
+                permissao=PERFIL_EXECUTANTE
+            elif self.perfil=='MODELADOR':
+                permissao=PERFIL_MODELADOR
+            elif self.perfil=='CONSULTA':
+                permissao=PERFIL_CONSULTA
+            print(permissao)
+
+            if permissao:
+                assign_perm('checklist.'+permissao, Group.objects.get(name=self.grupo_fk), Modelo.objects.get(nome=self.modelo_fk))    
 
     def delete(self, *args, **kwargs):
         #TODO:Remover permissões

@@ -139,3 +139,8 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 EMAIL_USE_TLS = False
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+PERFIL_APROVADOR='can_approve_lv'
+PERFIL_EXECUTANTE='can_edit_lv'
+PERFIL_MODELADOR='can_change_model'
+PERFIL_CONSULTA='can_view_lv'
