@@ -73,6 +73,7 @@ class Item(models.Model):
     class Meta:
         managed = True
         db_table = 'Item'
+        verbose_name_plural = 'itens'
 
 class ListaVerificacao(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
@@ -93,6 +94,8 @@ class ListaVerificacao(models.Model):
     class Meta:
         managed = True
         db_table = 'ListaVerificacao'
+        verbose_name_plural = 'listas de verificação'
+        permissions = [('can_edit_lv', 'Pode editar LV'),('can_approve_lv', 'Pode aprovar LV')]
 
 
 class ListaVerificacaoxItemxResposta(models.Model):
