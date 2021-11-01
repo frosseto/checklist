@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.http import HttpResponse
 import csv
+from django.contrib import messages
 from checklist.models import (Acesso, Modelo,
                               Grupo,
                               Item,
@@ -42,9 +43,15 @@ class GrupoAdmin(admin.ModelAdmin, ExportCsvMixin):
 
 @admin.register(Acesso)
 class AcessoAdmin(admin.ModelAdmin, ExportCsvMixin):
-    search_fields = ['modelo_fk','usuario_fk','grupo_fk']
-    list_display = ['modelo_fk','usuario_fk','grupo_fk']
+    search_fields = ['modelo_fk','perfil','grupo_fk']
+    list_display = ['modelo_fk','perfil','grupo_fk']
 
+    def save_model(self, request, obj, form, change):
+        if not(obj.pk is None):
+            messages.set_level(request, messages.ERROR)
+            messages.error(request, 'Não é permitida alteração ... Caso necessite modificar algo, será necessário excluir esta regra e criar uma nova')
+        else:
+            super(AcessoAdmin, self).save_model(request, obj, form, change)  
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):

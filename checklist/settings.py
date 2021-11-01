@@ -21,6 +21,7 @@ ALLOWED_HOSTS = ['checklist-pi.herokuapp.com','localhost']
 INSTALLED_APPS = [
     #'jet',
     #jet.dashboard',
+    'guardian',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,6 +36,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'notifications',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # default
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

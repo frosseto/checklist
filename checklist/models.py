@@ -6,6 +6,9 @@ from notifications.models import notify_handler
 from notifications.signals import notify
 from notifications.models import Notification
 from django.contrib.auth.models import User,Permission,Group
+from guardian.shortcuts import assign_perm
+
+        
 
 STATUS_CHOICES = (
     ('Aguardando analista','Aguardando analista'),
@@ -21,6 +24,12 @@ LISTA_VERIFICACAO_STATUS = (
     ('Aguardando Aprovador','Aguardando Aprovador'),
     ('Aprovada','Aprovada'),)
 
+LISTA_PERFIS = (
+    ('EXECUTANTE','Executante'),
+    ('APROVADOR','Aprovador'),
+    ('CRIADOR','Criador de modelo'),
+    ('Exibidor','Exibidor'),)
+
 # Checklist
 
 class Modelo(models.Model):
@@ -31,6 +40,7 @@ class Modelo(models.Model):
     class Meta:
         managed = True
         db_table = 'Modelo'
+        permissions = [('can_edit_lv', 'Pode editar LV'),('can_approve_lv', 'Pode aprovar LV')]
 
     def __str__(self):
         return self.nome
@@ -49,14 +59,23 @@ class Grupo(models.Model):
 
 class Acesso(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
-    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=False, null=False)
-    usuario_fk = models.ForeignKey(User, models.CASCADE, db_column="Usuario_FK", blank=False, null=False)
     grupo_fk = models.ForeignKey(Group, models.CASCADE, db_column="Grupo_FK", blank=False, null=False)
-    
+    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=False, null=False)
+    #usuario_fk = models.ForeignKey(User, models.CASCADE, db_column="Usuario_FK", blank=False, null=False)
+    perfil = models.CharField(db_column='Perfil', max_length=50, blank=False, null=False, choices=LISTA_PERFIS)
     class Meta:
         managed = True
         db_table = 'Acesso'
 
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            super(Acesso, self).save(*args, **kwargs)    
+            group = Group.objects.get(name=self.grupo_fk)
+            assign_perm('checklist.can_approve_lv', group, Modelo.objects.get(nome=self.modelo_fk))    
+
+    def delete(self, *args, **kwargs):
+        #TODO:Remover permissões
+        super(Acesso, self).delete(*args, **kwargs)
 
 class Item(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
@@ -95,8 +114,6 @@ class ListaVerificacao(models.Model):
         managed = True
         db_table = 'ListaVerificacao'
         verbose_name_plural = 'listas de verificação'
-        permissions = [('can_edit_lv', 'Pode editar LV'),('can_approve_lv', 'Pode aprovar LV')]
-
 
 class ListaVerificacaoxItemxResposta(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
@@ -107,6 +124,7 @@ class ListaVerificacaoxItemxResposta(models.Model):
     class Meta:
         managed = True
         db_table = 'ListaVerificacaoxItemxResposta'
+        verbose_name = 'resposta'
 
 
 class NotificationCTA(models.Model):
