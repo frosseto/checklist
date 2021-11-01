@@ -41,10 +41,10 @@ class Modelo(models.Model):
     class Meta:
         managed = True
         db_table = 'Modelo'
-        permissions = [('EXECUTANTE', 'Pode editar LV'),
-                       ('MODELADOR', 'Pode editar modelo'),
-                       ('CONSULTA', 'Pode visualizar LV'),
-                       ('APROVADOR', 'Pode aprovar LV')]
+        permissions = [(PERFIL_EXECUTANTE, 'Pode editar LV'),
+                       (PERFIL_MODELADOR, 'Pode editar modelo'),
+                       (PERFIL_CONSULTA, 'Pode visualizar LV'),
+                       (PERFIL_APROVADOR, 'Pode aprovar LV')]
 
     def __str__(self):
         return self.nome
@@ -84,10 +84,13 @@ class Acesso(models.Model):
                 permissao=PERFIL_MODELADOR
             elif self.perfil=='CONSULTA':
                 permissao=PERFIL_CONSULTA
-            print(permissao)
-
+            
             if permissao:
-                assign_perm('checklist.'+permissao, Group.objects.get(name=self.grupo_fk), Modelo.objects.get(nome=self.modelo_fk))    
+                permissao='checklist.'+permissao
+                # permissaoc = Permission.objects.filter(codename=permissao).first()
+                grupo=Group.objects.get(name=self.grupo_fk)
+                modelo=Modelo.objects.get(nome=self.modelo_fk)
+                assign_perm(permissao, grupo,modelo )    
 
     def delete(self, *args, **kwargs):
         #TODO:Remover permissões
