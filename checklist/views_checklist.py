@@ -13,9 +13,11 @@ from django.views.decorators.csrf import csrf_protect
 from notifications.models import Notification
 from notifications.signals import notify
 from plotly.offline import plot
+from guardian.shortcuts import get_perms
 
 from .filters import listaverificacaoFilter, modeloFilter
 from .models import (Item, ListaVerificacao, ListaVerificacaoxItemxResposta, Modelo)
+from checklist.settings import PERFIL_APROVADOR, PERFIL_EXECUTANTE, PERFIL_MODELADOR,PERFIL_CONSULTA
 
 
 # pesquisar lvs para visualizacao e edicao
@@ -135,12 +137,16 @@ def checklist(request,pk):
     listaverificacao = ListaVerificacao.objects.get(pk=pk)
     modelo_pk = listaverificacao.modelo_fk.pk
     lv_pk = pk
+    l=[]
+    if user.has_perm(PERFIL_APROVADOR,listaverificacao.modelo_fk):
+        l.append('Aprovador')
+    if user.has_perm(PERFIL_EXECUTANTE,listaverificacao.modelo_fk):
+        l.append('Executante')
 
     #l = user.groups.all().first()
-    l=[]
     #print(list(request.user.groups.all().values_list('name', flat=True)))
-    for g in request.user.groups.all():
-        l.append(g.name)
+    # for g in request.user.groups.all():
+    #     l.append(g.name)
     
     if l:
         grupo_acesso = l
@@ -181,10 +187,16 @@ def checklist_save(request,pk):
         lv_selected_itens = json.loads(data.get('lv_selected_itens'))  
 
         user = User.objects.get(username=request.user)
-        #l = user.groups.all().first()
+        listaverificacao = ListaVerificacao.objects.get(pk=pk)
         l=[]
-        for g in request.user.groups.all():
-            l.append(g.name)
+        if user.has_perm(PERFIL_APROVADOR,listaverificacao.modelo_fk):
+            l.append('Aprovador')
+        if user.has_perm(PERFIL_EXECUTANTE,listaverificacao.modelo_fk):
+            l.append('Executante')
+        #l = user.groups.all().first()
+        # l=[]
+        # for g in request.user.groups.all():
+        #     l.append(g.name)
         if l:
             grupo_acesso = l
         else:
@@ -193,7 +205,7 @@ def checklist_save(request,pk):
         print(grupo_acesso, lv['status'])
 
         sender = User.objects.get(username=request.user)
-        listaverificacao = ListaVerificacao.objects.get(pk=lv['id'])
+        # listaverificacao = ListaVerificacao.objects.get(pk=lv['id'])
         print(grupo_acesso)
         if 'Aprovador' in grupo_acesso and lv['status']=='Aprovada':
             notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
