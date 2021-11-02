@@ -8,6 +8,7 @@ from checklist.models import (Acesso, Modelo,
                               ListaVerificacao,
                               ListaVerificacaoxItemxResposta,
                               )
+from guardian.models import *
 
 class ExportCsvMixin:
     def export_as_csv(self, request, queryset):
@@ -34,6 +35,9 @@ class ModeloAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ['nome','descricao']
     actions = ["export_as_csv"]
 
+@admin.register(GroupObjectPermission)
+class GroupObjectPermissionAdmin (admin.ModelAdmin, ExportCsvMixin):
+    list_display = [field.name for field in GroupObjectPermission._meta.get_fields()]
 
 @admin.register(Grupo)
 class GrupoAdmin(admin.ModelAdmin, ExportCsvMixin):
@@ -51,8 +55,12 @@ class AcessoAdmin(admin.ModelAdmin, ExportCsvMixin):
             messages.set_level(request, messages.ERROR)
             messages.error(request, 'Não é permitida alteração ... Caso necessite modificar algo, será necessário excluir esta regra e criar uma nova')
         else:
-            super(AcessoAdmin, self).save_model(request, obj, form, change)  
-
+            super(AcessoAdmin, self).save_model(request, obj, form, change)
+    
+    def delete_queryset(self, request, queryset): #necessário para o admin'
+        for obj in queryset:
+            obj.delete()
+    
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     search_fields = ['id','nome','descricao','itemtipo','modelo_fk','valorpadrao','valor_choice','grupo_fk','editavel']

@@ -6,7 +6,7 @@ from notifications.models import notify_handler
 from notifications.signals import notify
 from notifications.models import Notification
 from django.contrib.auth.models import User,Permission,Group
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, remove_perm
 from checklist.settings import PERFIL_APROVADOR, PERFIL_EXECUTANTE, PERFIL_MODELADOR,PERFIL_CONSULTA
 
         
@@ -75,7 +75,6 @@ class Acesso(models.Model):
         if self.pk is None:
             super(Acesso, self).save(*args, **kwargs)    
             
-            permissao=''
             if self.perfil=='APROVADOR':
                 permissao=PERFIL_APROVADOR
             elif self.perfil=='EXECUTANTE':
@@ -84,18 +83,36 @@ class Acesso(models.Model):
                 permissao=PERFIL_MODELADOR
             elif self.perfil=='CONSULTA':
                 permissao=PERFIL_CONSULTA
+            else:
+                permissao=''
             
             if permissao:
                 permissao='checklist.'+permissao
-                # permissaoc = Permission.objects.filter(codename=permissao).first()
                 grupo=Group.objects.get(name=self.grupo_fk)
                 modelo=Modelo.objects.get(nome=self.modelo_fk)
+                print(permissao,grupo,modelo)
                 assign_perm(permissao, grupo,modelo )    
 
     def delete(self, *args, **kwargs):
-        #TODO:Remover permissões
-        super(Acesso, self).delete(*args, **kwargs)
-
+        if self.perfil=='APROVADOR':
+            permissao=PERFIL_APROVADOR
+        elif self.perfil=='EXECUTANTE':
+            permissao=PERFIL_EXECUTANTE
+        elif self.perfil=='MODELADOR':
+            permissao=PERFIL_MODELADOR
+        elif self.perfil=='CONSULTA':
+            permissao=PERFIL_CONSULTA
+        else:
+            permissao=''
+        
+        if permissao:
+            permissao='checklist.'+permissao
+            grupo=Group.objects.get(name=self.grupo_fk)
+            modelo=Modelo.objects.get(nome=self.modelo_fk)
+            # print(permissao,grupo,modelo)
+            remove_perm(permissao, grupo,modelo )  
+        super(Acesso, self).delete(*args, **kwargs)   
+     
 class Item(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
@@ -112,6 +129,9 @@ class Item(models.Model):
         managed = True
         db_table = 'Item'
         verbose_name_plural = 'itens'
+    
+    def __str__(self):
+        return str(self.descricao)
 
 class ListaVerificacao(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
