@@ -8,16 +8,18 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import connection
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.utils import timezone
+# from django.utils import timezone
 from django.views.decorators.csrf import csrf_protect
 from notifications.models import Notification
 from notifications.signals import notify
 from plotly.offline import plot
-from guardian.shortcuts import get_perms
+
+from checklist.settings import (PERFIL_APROVADOR, PERFIL_CONSULTA,
+                                PERFIL_EXECUTANTE, PERFIL_MODELADOR)
 
 from .filters import listaverificacaoFilter, modeloFilter
-from .models import (Item, ListaVerificacao, ListaVerificacaoxItemxResposta, Modelo)
-from checklist.settings import PERFIL_APROVADOR, PERFIL_EXECUTANTE, PERFIL_MODELADOR,PERFIL_CONSULTA
+from .models import (Item, ListaVerificacao, ListaVerificacaoxItemxResposta,
+                     Modelo)
 
 
 # pesquisar lvs para visualizacao e edicao
@@ -167,10 +169,7 @@ def checklist(request,pk):
 
 @login_required(login_url='/accounts/login/')
 def checklist_delete(request,pk):
-    listaverificacao=ListaVerificacao.objects.get(pk=pk)
-    listaverificacaoxitemxresposta = ListaVerificacaoxItemxResposta.objects.filter(listaverificacao_fk__id=pk)
-    listaverificacaoxitemxresposta.delete()
-    listaverificacao.delete()
+    ListaVerificacao.objects.get(pk=pk).delete()
     notifications = Notification.objects.filter(notificationcta__cta_link=pk)
     for n in notifications:
         n.delete()

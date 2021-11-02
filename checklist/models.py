@@ -156,7 +156,7 @@ class ListaVerificacao(models.Model):
 
 class ListaVerificacaoxItemxResposta(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
-    listaverificacao_fk = models.ForeignKey(ListaVerificacao, models.DO_NOTHING, db_column="ListaVerificacao_FK", blank=True, null=True)
+    listaverificacao_fk = models.ForeignKey(ListaVerificacao, models.CASCADE, db_column="ListaVerificacao_FK", blank=True, null=True)
     item_fk = models.ForeignKey(Item, models.DO_NOTHING, db_column="Item_FK", blank=True, null=True)
     resposta = models.CharField(db_column="Resposta", max_length=100, blank=True, null=True)
 
