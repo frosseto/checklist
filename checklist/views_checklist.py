@@ -3,7 +3,7 @@ from datetime import datetime
 
 import plotly.graph_objects as go
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import connection
 from django.http import HttpResponseRedirect, JsonResponse
@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_protect
 from notifications.models import Notification
 from notifications.signals import notify
 from plotly.offline import plot
+from django.contrib.contenttypes.models import ContentType
 
 from checklist.settings import (PERFIL_APROVADOR, PERFIL_CONSULTA,
                                 PERFIL_EXECUTANTE, PERFIL_MODELADOR)
@@ -207,15 +208,10 @@ def checklist_save(request,pk):
         # listaverificacao = ListaVerificacao.objects.get(pk=lv['id'])
         print(grupo_acesso)
         if 'Aprovador' in grupo_acesso and lv['status']=='Aprovada':
-            # notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
-            # for n in notifications:
-            #     n.delete()
-            print('LV aprovada')
+            Notification.objects.filter(target_object_id=lv['id'],target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()
+            
         elif 'Aprovador' in grupo_acesso and lv['status']=='Em elaboração':
-            print(listaverificacao.criadopor)
-            # notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
-            # for n in notifications:
-            #     n.delete()
+            Notification.objects.filter(target_object_id=lv['id'],target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()
             
             receiver = User.objects.get(username=listaverificacao.modificadopor if listaverificacao.modificadopor != '' else listaverificacao.criadopor)
             notify.send(sender, 
@@ -224,18 +220,15 @@ def checklist_save(request,pk):
                         description=f"LV {lv['id']} devolvida pelo aprovador",
                         target=listaverificacao) #lv['id']
         elif 'Executante' in grupo_acesso and lv['status']=='Aguardando Aprovador':
-            # notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
-            # for n in notifications:
-            #     n.delete()
+            Notification.objects.filter(target_object_id=lv['id'],target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()
             users = User.objects.filter(groups__name='Aprovador')
+            # grupo=Group.objects.filter(name='Aprovador')
             for user in users:
-                receiver = user
                 notify.send(sender, 
-                            recipient=receiver, 
+                            recipient=user, 
                             verb='LV enviada para aprovação', 
                             description=f"LV {lv['id']} aguardando aprovador",
                             target=listaverificacao
-                            #cta_link=lv['id']
                             )
         else:
             pass
