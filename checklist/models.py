@@ -149,6 +149,13 @@ class ListaVerificacao(models.Model):
             obj.criadopor = request.user
         obj.modificadopor = request.user
         super().save_model(request, obj, form, change)
+    
+    def delete(self, *args, **kwargs):
+        from notifications.models import Notification
+        from django.contrib.contenttypes.models import ContentType
+        Notification.objects.filter(target_object_id=self.pk,target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()    
+        super(ListaVerificacao, self).delete(*args, **kwargs) 
+
 
     class Meta:
         managed = True
