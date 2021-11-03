@@ -170,9 +170,9 @@ def checklist(request,pk):
 @login_required(login_url='/accounts/login/')
 def checklist_delete(request,pk):
     ListaVerificacao.objects.get(pk=pk).delete()
-    notifications = Notification.objects.filter(notificationcta__cta_link=pk)
-    for n in notifications:
-        n.delete()
+    # notifications = Notification.objects.filter(notificationcta__cta_link=pk)
+    # for n in notifications:
+    #     n.delete()
     res={}
     res['msg'] = 'Sucesso'
     return JsonResponse(res)
@@ -207,41 +207,42 @@ def checklist_save(request,pk):
         # listaverificacao = ListaVerificacao.objects.get(pk=lv['id'])
         print(grupo_acesso)
         if 'Aprovador' in grupo_acesso and lv['status']=='Aprovada':
-            notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
-            for n in notifications:
-                n.delete()
+            # notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
+            # for n in notifications:
+            #     n.delete()
+            print('LV aprovada')
         elif 'Aprovador' in grupo_acesso and lv['status']=='Em elaboração':
             print(listaverificacao.criadopor)
-            notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
-            for n in notifications:
-                n.delete()
+            # notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
+            # for n in notifications:
+            #     n.delete()
             
             receiver = User.objects.get(username=listaverificacao.modificadopor if listaverificacao.modificadopor != '' else listaverificacao.criadopor)
             notify.send(sender, 
                         recipient=receiver, 
-                        verb='Message', 
+                        verb='LV devolvida', 
                         description=f"LV {lv['id']} devolvida pelo aprovador",
-                        cta_link=lv['id'])
+                        target=listaverificacao) #lv['id']
         elif 'Executante' in grupo_acesso and lv['status']=='Aguardando Aprovador':
-            notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
-            for n in notifications:
-                n.delete()
+            # notifications = Notification.objects.filter(notificationcta__cta_link=lv['id'])
+            # for n in notifications:
+            #     n.delete()
             users = User.objects.filter(groups__name='Aprovador')
             for user in users:
                 receiver = user
                 notify.send(sender, 
                             recipient=receiver, 
-                            verb='Message', 
+                            verb='LV enviada para aprovação', 
                             description=f"LV {lv['id']} aguardando aprovador",
-                            cta_link=lv['id'])
+                            target=listaverificacao
+                            #cta_link=lv['id']
+                            )
         else:
             pass
     
         listaverificacao.nome = lv['nome']
         listaverificacao.observacao = lv['observacao']
-        #print(lv['status'])
         listaverificacao.status=lv['status']
-        #print('criadopor',listaverificacao.criadopor)
         listaverificacao.modificadopor = request.user
         listaverificacao.modificadoem = datetime.now()
         listaverificacao.save()

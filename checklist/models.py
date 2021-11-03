@@ -1,10 +1,11 @@
 from django.db import models
 from django.conf import settings
-from django.db.models.fields import related
-from django.utils.timezone import now
-from notifications.models import notify_handler
-from notifications.signals import notify
-from notifications.models import Notification
+from notifications.base.models import AbstractNotification
+# from django.db.models.fields import related
+# from django.utils.timezone import now
+# from notifications.models import notify_handler
+# from notifications.signals import notify
+# from notifications.models import Notification
 from django.contrib.auth.models import User,Permission,Group
 from guardian.shortcuts import assign_perm, remove_perm
 from checklist.settings import PERFIL_APROVADOR, PERFIL_EXECUTANTE, PERFIL_MODELADOR,PERFIL_CONSULTA
@@ -166,22 +167,22 @@ class ListaVerificacaoxItemxResposta(models.Model):
         verbose_name = 'resposta'
 
 
-class NotificationCTA(models.Model):
-    #id = models.AutoField(db_column='ID', primary_key=True)
-    notification = models.OneToOneField(Notification, on_delete=models.CASCADE)
-    cta_link = models.CharField(max_length=200, blank=True)
+# class NotificationCTA(models.Model):
+#     #id = models.AutoField(db_column='ID', primary_key=True)
+#     notification = models.OneToOneField(Notification, on_delete=models.CASCADE)
+#     cta_link = models.CharField(max_length=200, blank=True)
 
-    def __str__(self):
-        return str(self.cta_link)
-
-
-def custom_notify_handler(*args, **kwargs):
-    notifications = notify_handler(*args, **kwargs)
-    cta_link = kwargs.get("cta_link", "")
-    for notification in notifications:
-        NotificationCTA.objects.create(notification=notification, cta_link=cta_link)
-    return notifications
+#     def __str__(self):
+#         return str(self.cta_link)
 
 
-notify.disconnect(notify_handler, dispatch_uid='notifications.models.notification')
-notify.connect(custom_notify_handler)  # , dispatch_uid='notifications.models.notification')
+# def custom_notify_handler(*args, **kwargs):
+#     notifications = notify_handler(*args, **kwargs)
+#     cta_link = kwargs.get("cta_link", "")
+#     for notification in notifications:
+#         NotificationCTA.objects.create(notification=notification, cta_link=cta_link)
+#     return notifications
+
+
+# notify.disconnect(notify_handler, dispatch_uid='notifications.models.notification')
+# notify.connect(custom_notify_handler)  # , dispatch_uid='notifications.models.notification')
