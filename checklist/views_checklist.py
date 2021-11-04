@@ -3,9 +3,10 @@ from datetime import datetime
 
 import plotly.graph_objects as go
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User,Group
+from django.contrib.auth.models import Group, Permission, User
+from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db import connection
+# from django.db import connection
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 # from django.utils import timezone
@@ -13,24 +14,24 @@ from django.views.decorators.csrf import csrf_protect
 from notifications.models import Notification
 from notifications.signals import notify
 from plotly.offline import plot
-from django.contrib.contenttypes.models import ContentType
-
-from checklist.settings import (PERFIL_APROVADOR, PERFIL_CONSULTA,
-                                PERFIL_EXECUTANTE, PERFIL_MODELADOR)
+from guardian.shortcuts import get_objects_for_user,get_perms
 
 from .filters import listaverificacaoFilter, modeloFilter
 from .models import (Item, ListaVerificacao, ListaVerificacaoxItemxResposta,
                      Modelo)
-
+from .settings import (PERFIL_APROVADOR, PERFIL_CONSULTA, PERFIL_EXECUTANTE,
+                       PERFIL_MODELADOR)
 
 # pesquisar lvs para visualizacao e edicao
 @login_required(login_url='/accounts/login/')
 def checklist_pesquisa(request):
     data = request.GET.copy()
     user = User.objects.get(username=request.user)
+    objetosPermitidos=get_objects_for_user(user,[PERFIL_APROVADOR,PERFIL_EXECUTANTE,PERFIL_CONSULTA],Modelo,any_perm=True)
     filtered_qs = listaverificacaoFilter( 
                 data, 
-                ListaVerificacao.objects.all().order_by('-modificadoem','-criadoem')
+                ListaVerificacao.objects.filter(modelo_fk__in =objetosPermitidos).order_by('-modificadoem','-criadoem')
+                # ListaVerificacao.objects.all().order_by('-modificadoem','-criadoem')
             ).qs
     page = request.GET.get('page', 1)
     print(request.GET)
@@ -44,16 +45,12 @@ def checklist_pesquisa(request):
     except EmptyPage:
         response = paginator.page(paginator.num_pages)
  
-    args = {
+    context = {
         'filter': listaverificacao_filter, 
         'page_obj':response, 
         'notifications': user.notifications.unread()
         }
-    return render(
-        request, 
-        'checklist_pesquisa_lv_preenchida.html', 
-        args
-    )
+    return render(request,'checklist_pesquisa_lv_preenchida.html', context)
 
 
 # pesquisar lvs para criacao
@@ -61,9 +58,10 @@ def checklist_pesquisa(request):
 def checklist_nova_selecao(request):
     data = request.GET.copy()
     user = User.objects.get(username=request.user)
+    objetosPermitidos=get_objects_for_user(user,[PERFIL_APROVADOR,PERFIL_EXECUTANTE],Modelo,any_perm=True)
     filtered_qs = modeloFilter( 
                 data, 
-                Modelo.objects.all()
+                Modelo.objects.filter(id__in=objetosPermitidos)
             ).qs
     
     page = request.GET.get('page', 1)
@@ -145,8 +143,6 @@ def checklist(request,pk):
         l.append('Aprovador')
     if user.has_perm(PERFIL_EXECUTANTE,listaverificacao.modelo_fk):
         l.append('Executante')
-
-    #l = user.groups.all().first()
     #print(list(request.user.groups.all().values_list('name', flat=True)))
     # for g in request.user.groups.all():
     #     l.append(g.name)
@@ -171,11 +167,7 @@ def checklist(request,pk):
 @login_required(login_url='/accounts/login/')
 def checklist_delete(request,pk):
     ListaVerificacao.objects.get(pk=pk).delete()
-    # notifications = Notification.objects.filter(notificationcta__cta_link=pk)
-    # for n in notifications:
-    #     n.delete()
-    res={}
-    res['msg'] = 'Sucesso'
+    res={'msg':'Sucesso'}
     return JsonResponse(res)
 
 
@@ -193,8 +185,6 @@ def checklist_save(request,pk):
             l.append('Aprovador')
         if user.has_perm(PERFIL_EXECUTANTE,listaverificacao.modelo_fk):
             l.append('Executante')
-        #l = user.groups.all().first()
-        # l=[]
         # for g in request.user.groups.all():
         #     l.append(g.name)
         if l:
@@ -210,15 +200,17 @@ def checklist_save(request,pk):
         if 'Aprovador' in grupo_acesso and lv['status']=='Aprovada':
             Notification.objects.filter(target_object_id=lv['id'],target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()
             
+        #TODO:Quando a pessoa é aprovadora e executora e entra para editar algo, é gerada uma notificação de lv devolvida após salvar
         elif 'Aprovador' in grupo_acesso and lv['status']=='Em elaboração':
             Notification.objects.filter(target_object_id=lv['id'],target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()
             
-            receiver = User.objects.get(username=listaverificacao.modificadopor if listaverificacao.modificadopor != '' else listaverificacao.criadopor)
+            receiver = User.objects.get(username=listaverificacao.modificadopor if listaverificacao.modificadopor != None else listaverificacao.criadopor)
             notify.send(sender, 
                         recipient=receiver, 
                         verb='LV devolvida', 
                         description=f"LV {lv['id']} devolvida pelo aprovador",
                         target=listaverificacao) #lv['id']
+        
         elif 'Executante' in grupo_acesso and lv['status']=='Aguardando Aprovador':
             Notification.objects.filter(target_object_id=lv['id'],target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()
             users = User.objects.filter(groups__name='Aprovador')
@@ -255,8 +247,7 @@ def checklist_save(request,pk):
                                                               item_fk=item,
                                                               resposta=str(lv_selected_itens[key]))
  
-        res={}
-        res['msg'] = 'Sucesso'
+        res={'msg':'Sucesso'}
         return JsonResponse(res)
 
 
@@ -287,6 +278,3 @@ def checklist_relatorio(request):
 		'plot': scatter()
 	}
 	return render(request, 'checklist_relatorio.html', context)
-
-
-
