@@ -94,11 +94,11 @@
                                 [[ item.nome ]] 
 
                               </div>
-                              <div v-else-if="item.itemtipo === 'TEXT'">
+                              <div class="mx-2" v-else-if="item.itemtipo === 'TEXT'">
                                 
                                 [[ item.nome ]] 
 
-                                <input class="mx-2" 
+                                <input  
                                 type="text" 
                                 v-bind:key="item.id" 
                                 v-model="lv_selected_itens[item.id]"

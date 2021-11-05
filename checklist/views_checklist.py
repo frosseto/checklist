@@ -88,17 +88,14 @@ def checklist_nova_selecao(request):
     )
 
 
-# criar e salvar lv
+# criar e salvar nova lv
 @login_required(login_url='/accounts/login/')
 def checklist_nova(request,pk):
     if request.method == 'POST':
 
-        data = request.POST 
+        data = request.POST
         lv = json.loads(data.get('lv'))   
-        lv_selected_itens = json.loads(data.get('lv_selected_itens'))  
-
         modelo=Modelo.objects.get(pk=lv['modelo'])
-
         listaverificacao=ListaVerificacao.objects.create(modelo_fk=modelo,
                                                          nome=lv['nome'],
                                                          observacao=lv['observacao'],
@@ -107,17 +104,16 @@ def checklist_nova(request,pk):
                                                          criadoem=datetime.now())
         listaverificacao.save()
 
-        print(lv_selected_itens)
-        for key in lv_selected_itens:
+        respostas = json.loads(data.get('lv_selected_itens'))
+        print(respostas)
+        for key in respostas:
             item=Item.objects.get(pk=key)
-            item=ListaVerificacaoxItemxResposta.objects.create(listaverificacao_fk=listaverificacao,
+            resposta=ListaVerificacaoxItemxResposta.objects.create(listaverificacao_fk=listaverificacao,
                                                                item_fk=item,
-                                                               resposta=lv_selected_itens[key])
-            item.save()
+                                                               resposta=respostas[key])
+            resposta.save()
 
-        res={}
-        res['msg'] = 'Sucesso'
-        res['lv_pk'] = listaverificacao.id
+        res={'msg':'Sucesso','lv_pk':listaverificacao.id}
         return JsonResponse(res)
     else:
         user = User.objects.get(username=request.user)
@@ -131,7 +127,7 @@ def checklist_nova(request,pk):
     
 
     
-# visualizar e editar lv
+# visualizar lv
 @login_required(login_url='/accounts/login/')
 def checklist(request,pk):
     user = User.objects.get(username=request.user)
@@ -143,6 +139,8 @@ def checklist(request,pk):
         l.append('Aprovador')
     if user.has_perm(PERFIL_EXECUTANTE,listaverificacao.modelo_fk):
         l.append('Executante')
+    if user.has_perm(PERFIL_CONSULTA,listaverificacao.modelo_fk):
+        l.append('Visualizador')
     #print(list(request.user.groups.all().values_list('name', flat=True)))
     # for g in request.user.groups.all():
     #     l.append(g.name)
@@ -253,8 +251,6 @@ def checklist_save(request,pk):
 
 
 from . import relatorio_dash_app
-
-
 @login_required(login_url='/accounts/login/')
 def checklist_relatorio(request):
 	def scatter():
