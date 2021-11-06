@@ -144,3 +144,5 @@ PERFIL_APROVADOR='can_approve_lv'
 PERFIL_EXECUTANTE='can_edit_lv'
 PERFIL_MODELADOR='can_change_model'
 PERFIL_CONSULTA='can_view_lv'
+
+LOGOUT_REDIRECT_URL='/' #Necessário para o bug do logout a partir da página do admin
