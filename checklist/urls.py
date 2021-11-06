@@ -32,7 +32,7 @@ import notifications.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	path('', index),
+	path('', checklist_pesquisa),
     path('accounts/',include('django.contrib.auth.urls')),
     #path('jet/', include('jet.urls', 'jet')), 
     #path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
