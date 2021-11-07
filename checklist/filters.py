@@ -4,7 +4,11 @@ from django import forms
 from django.db import models
 from .models import (Modelo,
                      ListaVerificacao)
+from guardian.shortcuts import get_objects_for_user
+from .settings import (PERFIL_APROVADOR, PERFIL_CONSULTA, PERFIL_EXECUTANTE,
+                       PERFIL_MODELADOR)
 
+                   
 class modeloFilter(django_filters.FilterSet):
     class Meta:
         model = Modelo
@@ -18,7 +22,28 @@ class modeloFilter(django_filters.FilterSet):
             },
         }
 
+
+def queryset_modelos(user):
+    if user:
+        objetosPermitidos=get_objects_for_user(user,[PERFIL_APROVADOR,PERFIL_EXECUTANTE,PERFIL_CONSULTA],Modelo,any_perm=True)
+        return Modelo.objects.filter(pk__in =objetosPermitidos)
+    else:
+        return Modelo.objects.filter(pk__in =[2])
+
+
+
 class listaverificacaoFilter(django_filters.FilterSet):
+    user = None
+    def __init__(self, *args, **kwargs):
+        if 'user' in kwargs:
+            user = kwargs.pop('user')
+            print(user)
+        super(listaverificacaoFilter, self).__init__(*args, **kwargs)
+
+    modelo_fk=django_filters.ModelChoiceFilter(
+    queryset=queryset_modelos(user)
+)
+
     class Meta:
         model = ListaVerificacao
         fields = ['observacao','criadopor','modelo_fk','status']
@@ -30,4 +55,6 @@ class listaverificacaoFilter(django_filters.FilterSet):
             },
         },
     }
+
+    
 
