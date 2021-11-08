@@ -33,8 +33,6 @@ def checklist_pesquisa(request):
     print(data)
     user = User.objects.get(username=request.user)
     modelos=get_objects_for_user(user,[PERFIL_APROVADOR,PERFIL_EXECUTANTE,PERFIL_CONSULTA],Modelo,any_perm=True)
-    for modelo in modelos:
-        print('modelo',modelo.id, modelo.nome)
     filtered_qs = listaverificacaoFilter( 
                 data, 
                 #ListaVerificacao.objects.filter(modelo_fk__in =objetosPermitidos).order_by('-modificadoem','-criadoem')
