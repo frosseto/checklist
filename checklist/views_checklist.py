@@ -26,17 +26,24 @@ from .settings import (PERFIL_APROVADOR, PERFIL_CONSULTA, PERFIL_EXECUTANTE,
 @login_required(login_url='/accounts/login/')
 def checklist_pesquisa(request):
     data = request.GET.copy()
+    if 'modelo_fk' in data:
+        modelo_selected = data['modelo_fk']
+    else:
+        modelo_selected = ''
+    print(data)
     user = User.objects.get(username=request.user)
-    objetosPermitidos=get_objects_for_user(user,[PERFIL_APROVADOR,PERFIL_EXECUTANTE,PERFIL_CONSULTA],Modelo,any_perm=True)
+    modelos=get_objects_for_user(user,[PERFIL_APROVADOR,PERFIL_EXECUTANTE,PERFIL_CONSULTA],Modelo,any_perm=True)
+    for modelo in modelos:
+        print('modelo',modelo.id, modelo.nome)
     filtered_qs = listaverificacaoFilter( 
                 data, 
-                ListaVerificacao.objects.filter(modelo_fk__in =objetosPermitidos).order_by('-modificadoem','-criadoem'),
-                user=request.user
-                # ListaVerificacao.objects.all().order_by('-modificadoem','-criadoem')
+                #ListaVerificacao.objects.filter(modelo_fk__in =objetosPermitidos).order_by('-modificadoem','-criadoem')
+                #,
+                #user=request.user
+                ListaVerificacao.objects.all().order_by('-modificadoem','-criadoem')
             ).qs
     page = request.GET.get('page', 1)
-    print(request.GET)
-    listaverificacao_filter = listaverificacaoFilter(request.GET, filtered_qs,modelos=objetosPermitidos)
+    listaverificacao_filter = listaverificacaoFilter(request.GET, filtered_qs)
     paginator = Paginator(filtered_qs, 40)
     
     try:
@@ -48,6 +55,8 @@ def checklist_pesquisa(request):
  
     context = {
         'filter': listaverificacao_filter, 
+        'modelos': modelos,
+        'modelo_selected': modelo_selected,
         'page_obj':response, 
         'notifications': user.notifications.unread()
         }

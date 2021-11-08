@@ -47,8 +47,8 @@ class Modelo(models.Model):
                        (PERFIL_CONSULTA, 'Pode visualizar LV'),
                        (PERFIL_APROVADOR, 'Pode aprovar LV')]
 
-    def __str__(self):
-        return self.nome
+    # def __str__(self):
+    #     return self.nome
 
 class Grupo(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
