@@ -23,26 +23,27 @@ class modeloFilter(django_filters.FilterSet):
         }
 
 
-def queryset_modelos(user):
-    if user:
-        objetosPermitidos=get_objects_for_user(user,[PERFIL_APROVADOR,PERFIL_EXECUTANTE,PERFIL_CONSULTA],Modelo,any_perm=True)
-        return Modelo.objects.filter(pk__in =objetosPermitidos)
-    else:
-        return Modelo.objects.filter(pk__in =[2])
+# def queryset_modelos(user):
+#     if user:
+#         objetosPermitidos=get_objects_for_user(user,[PERFIL_APROVADOR,PERFIL_EXECUTANTE,PERFIL_CONSULTA],Modelo,any_perm=True)
+#         return Modelo.objects.filter(pk__in =objetosPermitidos)
+#     else:
+#         return Modelo.objects.filter(pk__in =[2])
+        
 
 
 
 class listaverificacaoFilter(django_filters.FilterSet):
-    user = None
+    modelos = None
     def __init__(self, *args, **kwargs):
-        if 'user' in kwargs:
-            user = kwargs.pop('user')
-            print(user)
+        if 'modelos' in kwargs:
+            modelo = kwargs.pop('modelos')
+            print(modelo)
         super(listaverificacaoFilter, self).__init__(*args, **kwargs)
 
-    modelo_fk=django_filters.ModelChoiceFilter(
-    queryset=queryset_modelos(user)
-)
+    # modelo_fk=django_filters.ModelChoiceFilter(
+    # queryset=queryset_modelos(user)
+# )
 
     class Meta:
         model = ListaVerificacao

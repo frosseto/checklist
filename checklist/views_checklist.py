@@ -35,7 +35,7 @@ def checklist_pesquisa(request):
             ).qs
     page = request.GET.get('page', 1)
     print(request.GET)
-    listaverificacao_filter = listaverificacaoFilter(request.GET, queryset=filtered_qs)
+    listaverificacao_filter = listaverificacaoFilter(request.GET, filtered_qs,modelos=objetosPermitidos)
     paginator = Paginator(filtered_qs, 40)
     
     try:
