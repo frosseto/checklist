@@ -204,7 +204,7 @@ def checklist_save(request,pk):
             Notification.objects.filter(target_object_id=lv['id'],target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()
             
         #TODO:Quando a pessoa é aprovadora e executora e entra para editar algo, é gerada uma notificação de lv devolvida após salvar
-        elif 'Aprovador' in grupo_acesso and lv['status']=='Em elaboração':
+        elif 'Aprovador' in grupo_acesso and lv['status']=='Em elaboração' and listaverificacao.status=='Aguardando Aprovador'  :
             Notification.objects.filter(target_object_id=lv['id'],target_content_type=ContentType.objects.get_for_model(ListaVerificacao)).delete()
             
             receiver = User.objects.get(username=listaverificacao.modificadopor if listaverificacao.modificadopor != None else listaverificacao.criadopor)
