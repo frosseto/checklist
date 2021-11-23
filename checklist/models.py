@@ -37,7 +37,7 @@ LISTA_PERFIS = (
 class Modelo(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
-    descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
+    descricao = models.CharField('Descrição',db_column='Descricao', max_length=1024, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -53,7 +53,7 @@ class Modelo(models.Model):
 class Grupo(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
-    descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
+    descricao = models.CharField('Descrição',db_column='Descricao', max_length=1024, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -64,8 +64,8 @@ class Grupo(models.Model):
 
 class Acesso(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
-    grupo_fk = models.ForeignKey(Group, models.CASCADE, db_column="Grupo_FK", blank=False, null=False)
-    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=False, null=False)
+    grupo_fk = models.ForeignKey(Group, models.CASCADE, db_column="Grupo_FK", blank=False, null=False, verbose_name='Grupo de acesso')
+    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=False, null=False, verbose_name='Modelo')
     #usuario_fk = models.ForeignKey(User, models.CASCADE, db_column="Usuario_FK", blank=False, null=False)
     perfil = models.CharField(db_column='Perfil', max_length=50, blank=False, null=False, choices=LISTA_PERFIS)
     class Meta:
@@ -117,13 +117,13 @@ class Acesso(models.Model):
 class Item(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=100, blank=True, null=True)
-    descricao = models.CharField(db_column='Descricao', max_length=1024, blank=True, null=True)
-    itemtipo = models.CharField(db_column='ItemTipo', max_length=50, blank=True, null=True, choices=ITEM_TIPOS)
-    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True)
-    valorpadrao = models.CharField(db_column="ValorPadrao", max_length=100, blank=True, null=True)
-    valor_choice = models.CharField(db_column="ValorChoice", max_length=255, blank=True, null=True)
-    grupo_fk = models.ForeignKey(Grupo, models.DO_NOTHING, db_column="Grupo_FK", blank=True, null=True)
-    editavel = models.BooleanField(db_column='Editavel', blank=False, null=False,default=True)
+    descricao = models.CharField('Descrição',db_column='Descricao', max_length=1024, blank=True, null=True)
+    itemtipo = models.CharField('Tipo',db_column='ItemTipo', max_length=50, blank=True, null=True, choices=ITEM_TIPOS)
+    modelo_fk = models.ForeignKey(Modelo, models.DO_NOTHING, db_column="Modelo_FK", blank=True, null=True, verbose_name='Modelo')
+    valorpadrao = models.CharField('Valor padrão',db_column="ValorPadrao", max_length=100, blank=True, null=True)
+    valor_choice = models.CharField('Opções de resposta',db_column="ValorChoice", max_length=255, blank=True, null=True)
+    grupo_fk = models.ForeignKey(Grupo, models.DO_NOTHING, db_column="Grupo_FK", blank=True, null=True, verbose_name='Seção')
+    editavel = models.BooleanField('Editável',db_column='Editavel', blank=False, null=False,default=True)
 
     
     class Meta:
@@ -137,7 +137,7 @@ class Item(models.Model):
 class ListaVerificacao(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)
     nome = models.CharField(db_column='Nome', max_length=255, blank=True, null=True)
-    observacao = models.CharField(db_column='Observacao', max_length=1024, blank=True, null=True)
+    observacao = models.CharField('Observação',db_column='Observacao', max_length=1024, blank=True, null=True)
     criadopor = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True, on_delete=models.SET_NULL)
     criadoem = models.DateTimeField(db_column='CriadoEm', blank=True, null=True)
     modificadopor = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
