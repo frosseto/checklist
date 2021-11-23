@@ -279,7 +279,7 @@ var vm = new Vue({
   created: function(){
     this.grupo_acesso=grupo_acesso.text.replace(/"/g,"");
     this.create=lv_pk==='';
-    if (this.create===true) {this.grupo_acesso='Criador'};
+    if (this.create===true) {this.grupo_acesso='Executante'};
     this.getLV()
 }
 })
