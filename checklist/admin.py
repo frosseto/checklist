@@ -35,9 +35,9 @@ class ModeloAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ['nome','descricao']
     actions = ["export_as_csv"]
 
-@admin.register(GroupObjectPermission)
-class GroupObjectPermissionAdmin (admin.ModelAdmin, ExportCsvMixin):
-    list_display = [field.name for field in GroupObjectPermission._meta.get_fields()]
+# @admin.register(GroupObjectPermission)
+# class GroupObjectPermissionAdmin (admin.ModelAdmin, ExportCsvMixin):
+#     list_display = [field.name for field in GroupObjectPermission._meta.get_fields()]
 
 @admin.register(Grupo)
 class GrupoAdmin(admin.ModelAdmin, ExportCsvMixin):
@@ -68,19 +68,19 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_editable = ['nome','descricao','itemtipo','modelo_fk','valorpadrao','valor_choice','grupo_fk','editavel']
 
 
-@admin.register(ListaVerificacao)
-class ListaVerificacaoadmin(admin.ModelAdmin):
-    search_fields = ['id','nome','observacao','criadopor','modelo_fk','status']
-    list_display = ['id','nome','observacao','criadopor','modelo_fk','status']
-    list_editable = ['nome','observacao','criadopor','modelo_fk','status']
+# @admin.register(ListaVerificacao)
+# class ListaVerificacaoadmin(admin.ModelAdmin):
+#     search_fields = ['id','nome','observacao','criadopor','modelo_fk','status']
+#     list_display = ['id','nome','observacao','criadopor','modelo_fk','status']
+#     list_editable = ['nome','observacao','criadopor','modelo_fk','status']
 
 
 #Remover as respostas do admin, na versão final
-@admin.register(ListaVerificacaoxItemxResposta)
-class ListaVerificacaoxItemxRespostaadmin(admin.ModelAdmin):
-    search_fields = ['listaverificacao_fk','item_fk','resposta']
-    list_display = ['id','listaverificacao_fk','item_fk','resposta']
-    list_editable = ['listaverificacao_fk','item_fk','resposta']
+# @admin.register(ListaVerificacaoxItemxResposta)
+# class ListaVerificacaoxItemxRespostaadmin(admin.ModelAdmin):
+#     search_fields = ['listaverificacao_fk','item_fk','resposta']
+#     list_display = ['id','listaverificacao_fk','item_fk','resposta']
+#     list_editable = ['listaverificacao_fk','item_fk','resposta']
 
 
 
