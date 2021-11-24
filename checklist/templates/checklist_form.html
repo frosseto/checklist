@@ -90,13 +90,16 @@
                                 v-bind:key="item.id" 
                                 v-model="lv_selected_itens[item.id]"
                                 :disabled="isDisabled || (item.editavel===false && edit===true)"> 
-
+                                <span data-toggle="tooltip" data-placement="top" :title="item.descricao">
                                 [[ item.nome ]] 
+                                </span>
 
                               </div>
                               <div class="mx-2" v-else-if="item.itemtipo === 'TEXT'">
                                 
+                                <span data-toggle="tooltip" data-placement="top" :title="item.descricao">
                                 [[ item.nome ]] 
+                                </span> 
 
                                 <input  
                                 type="text" 
@@ -108,7 +111,9 @@
 
                               <div class="mx-2" v-else-if="item.itemtipo === 'COMBOBOX'">
                                 
-                                [[ item.nome ]] 
+                                <span data-toggle="tooltip" data-placement="top" :title="item.descricao">
+                                    [[ item.nome ]] 
+                                </span> 
                                 
                                 <select  
                                 v-bind:key="item.id"
