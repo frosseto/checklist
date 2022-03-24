@@ -26,7 +26,7 @@
               <select name="modelo_fk" class="form-control form-control-sm" id="id_modelo_fk">
                 <option value="" selected="">---------</option>
                 {% for modelo in modelos %}
-                <option value="{{ modelo.id }}" {% ifequal modelo_selected modelo.id|stringformat:"s" %}selected{% endifequal %} >
+                <option value="{{ modelo.id }}" {% if modelo_selected == modelo.id|stringformat:"s" %}selected{% endif %} >
                     {{ modelo.nome }}
                 </option>
                 {% endfor %}

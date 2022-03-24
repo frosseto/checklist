@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.conf.urls import url
-from django.urls import include, path
+# from django.conf.urls import url
+from django.urls import include, path, re_path
 
 from rest_framework import routers
 
@@ -54,7 +54,7 @@ urlpatterns = [
 
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    re_path('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 
 ]
 
