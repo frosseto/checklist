@@ -219,3 +219,12 @@ body.dark table td{
 	background-color:#1E2022 !important;
 	color: white !important;
 }
+
+body.dark .login-box{
+	background-color:#47494a !important;
+	color: white !important;	
+}
+
+body.dark .text-info{
+	color: white !important;
+}
