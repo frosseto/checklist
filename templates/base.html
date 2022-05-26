@@ -12,7 +12,10 @@
 
     <link rel="stylesheet" href="{% static 'css/bootstrap/4.6.0/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'fa/css/all.min.css' %}">
+    
+
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dark-mode.css' %}">
     
     <link rel="stylesheet" href="{% static 'css/bootstrap-select/1.13.18/bootstrap-select.min.css' %}">
     {% block styles %}{% endblock styles %}
@@ -32,6 +35,7 @@
     {% include "_partials/alert.html" %}
     {% include "_partials/modal_confirm.html" %}
 
+
     <script src="{% static 'js/jquery/3.6.0/jquery.min.js' %}"></script>
     <script src="{% static 'js/jquery/1.11.4/jquery-ui.min.js' %}"></script>
     <script src="{% static 'js/popper/1.16.1/popper.min.js' %}"></script>
@@ -39,6 +43,8 @@
     <script src="{% static 'js/validator/0.11.9/validator.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-select/1.13.18/bootstrap-select.min.js' %}"></script>
     <script src="{% static 'epim/js_epim-bs.js' %}"></script>
+    <script src="{% static 'epim/dark-mode.js' %}"></script>
+
 
     {% block js %}
     {% endblock js%}
