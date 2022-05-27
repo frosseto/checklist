@@ -59,3 +59,8 @@ html {
 .default {cursor: default;}
 .grab {cursor: -webkit-grab; cursor: grab;}
 .n-resize {cursor: n-resize;}
+
+body.dark textarea, input, select{
+	background-color: white !important;
+	color: black !important;
+}
