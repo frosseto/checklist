@@ -6,7 +6,7 @@ autobahn==21.3.1
 Automat==20.2.0
 bootstrap4==0.1.0
 Brotli==1.0.9
-cffi==1.14.6
+cffi==1.15.0
 channels==3.0.4
 channels-redis==3.3.0
 click==8.0.1

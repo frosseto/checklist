@@ -5,3 +5,4 @@ chave_pub*
 checklist/migrations
 .DS_Store
 .gitignore
+.env
