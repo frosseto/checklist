@@ -85,7 +85,7 @@
 
                             <div v-if="item.itemtipo === 'CHECKBOX'">
                                 
-                                <input class="mx-2" 
+                                <input class="mx-2 form-control" 
                                 type="checkbox" 
                                 v-bind:key="item.id" 
                                 v-model="lv_selected_itens[item.id]"
@@ -102,6 +102,7 @@
                                 </span> 
 
                                 <input  
+                                class="form-control"
                                 type="text" 
                                 v-bind:key="item.id" 
                                 v-model="lv_selected_itens[item.id]"
@@ -116,6 +117,7 @@
                                 </span> 
                                 
                                 <select  
+                                class="form-control"
                                 v-bind:key="item.id"
                                 v-model="lv_selected_itens[item.id]"
                                 :disabled="isDisabled || (item.editavel===false && edit===true)">
