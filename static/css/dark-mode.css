@@ -194,10 +194,17 @@ body.dark .toggle-switch:active:after {
   animation:none!important;
 }
 
-body.dark textarea, input, select{
+
+.form-control {
+	background-color: white !important;
+	color: black ;
+} 
+
+body.dark .form-control {
 	background-color:#1E2022 !important;
-	color: white !important;
-}
+	color: white ;
+} 
+
 
 body.dark .card-header{
 	background-color:#1E2022;
@@ -223,7 +230,12 @@ body.dark table td{
 body.dark .login-box{
 	background-color:#47494a !important;
 	color: white !important;	
-}
+} 
+
+.login-box{
+	background-color:white !important;
+	color: black !important;	
+} 
 
 body.dark .text-info{
 	color: white !important;
