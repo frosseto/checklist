@@ -14,18 +14,17 @@
 
 
 
+
 {% block content %}
 <br>
 <div class="container-fluid" id="app">
     <div class="row">
         <div class="col-8">
-
         </div>
         <div class="col-8">
             
         </div>
     </div>
-
     <div class="row form-group">
         <div class="col-6">
             <div class="row">
@@ -44,7 +43,6 @@
         <div class="col-6">
             <div class="float-right">
                 <button class="btn btn-sm btn-secondary btn-sao mx-1" v-on:click="goBack">Voltar</a>
-
                 <button v-if="(!create && !edit) && (grupo_acesso.includes('Executante') && lv.status == 'Em elaboração')" 
                 id="enviar-aprovacao-lv" 
                 class="btn btn-sm btn-success btn-sao float-right mx-1" 
@@ -55,7 +53,6 @@
                         id="aprovar-lv" class="btn btn-sm btn-success btn-sao float-right mx-1" v-on:click="acaoLV($event)">Aprovar</button>
                 <button v-if="!create && !edit && (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador')" 
                         id="retornar-lv" class="btn btn-sm btn-warning btn-sao float-right mx-1" v-on:click="acaoLV($event)">Retornar Exec.</button>
-
                 <button v-if="(!create && !edit) && (   (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador') || (grupo_acesso.includes('Executante') && lv.status == 'Em elaboração')  )" 
                         id="edit-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="editLV($event)">Editar</button>
                 <button v-if="create || edit && (   (grupo_acesso.includes('Aprovador') && lv.status == 'Aguardando Aprovador') || (grupo_acesso.includes('Executante') && lv.status == 'Em elaboração')  )" 
@@ -66,9 +63,7 @@
                         id="delete-lv" class="btn btn-sm btn-primary btn-sao float-right mx-1" v-on:click="deleteLV">Apagar</button>
             </div>
         </div>
-
         <div class="row">
-
         </div>
         
     </div>
@@ -82,10 +77,9 @@
                     
                     <div class='card-text' v-for="item in group">
                         <label class="row">
-
                             <div v-if="item.itemtipo === 'CHECKBOX'">
                                 
-                                <input class="mx-2 form-control" 
+                                <input class="mx-2" 
                                 type="checkbox" 
                                 v-bind:key="item.id" 
                                 v-model="lv_selected_itens[item.id]"
@@ -93,23 +87,18 @@
                                 <span data-toggle="tooltip" data-placement="top" :title="item.descricao">
                                 [[ item.nome ]] 
                                 </span>
-
                               </div>
                               <div class="mx-2" v-else-if="item.itemtipo === 'TEXT'">
                                 
                                 <span data-toggle="tooltip" data-placement="top" :title="item.descricao">
                                 [[ item.nome ]] 
                                 </span> 
-
                                 <input  
-                                class="form-control"
                                 type="text" 
                                 v-bind:key="item.id" 
                                 v-model="lv_selected_itens[item.id]"
                                 :disabled="isDisabled || (item.editavel===false && edit===true)">
-
                               </div>
-
                               <div class="mx-2" v-else-if="item.itemtipo === 'COMBOBOX'">
                                 
                                 <span data-toggle="tooltip" data-placement="top" :title="item.descricao">
@@ -117,14 +106,12 @@
                                 </span> 
                                 
                                 <select  
-                                class="form-control"
                                 v-bind:key="item.id"
                                 v-model="lv_selected_itens[item.id]"
                                 :disabled="isDisabled || (item.editavel===false && edit===true)">
                                     <option v-for="option in item.valor_choice.split(';')" v-bind:value="option" v-text="option"></option>
                                   </select>
                               </div>
-
                               <div v-else>
                                 Tipo de controle selecionado no modelo inválido
                               </div>
@@ -145,38 +132,26 @@
         </div>  
     </div>
     </div>
-
 </div>
  
-
 <!-- Alerta -->
 <div class="alert" id="tile-alert" style="display:none;">
     <button type="button" class="close" data-hide="alert">&times;</button>
     <strong><span id="alert-strong-text">Alerta</span></strong><span id="alert-text">Thats all folks</span>
 </div>
-
 {% endblock %}
-
 {% block footer %}
-
 {% endblock footer %}
-
 {% block js %}
-
 {{ modelo_pk|json_script:"modelo_pk" }}
 {{ lv_pk|json_script:"lv_pk" }}
 {{ grupo_acesso|json_script:"grupo_acesso" }}
-
 <script>
     const modelo_pk = JSON.parse(document.getElementById('modelo_pk').textContent);
     const lv_pk = JSON.parse(document.getElementById('lv_pk').textContent);
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
 <script src="{% static 'js/moment.js/2.29.1/moment-with-locales.min.js' %}"></script>
 <script src="https://unpkg.com/vue@2"></script>
-
 <script src="{% static 'checklist/checklist_form.js' %}"></script>
-
 {% endblock js %} 
