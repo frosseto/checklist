@@ -31,7 +31,7 @@ notifications==0.3.2
 numpy==1.22.3
 pandas==1.4.1
 plotly==5.6.0
-psycopg2==2.9.3
+# psycopg2==2.9.3
 python-dateutil==2.8.2
 python-decouple==3.6
 pytz==2022.1
