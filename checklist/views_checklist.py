@@ -11,8 +11,8 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 # from django.utils import timezone
 from django.views.decorators.csrf import csrf_protect
-from notifications.models import Notification
-from notifications.signals import notify
+#from notifications.models import Notification
+#from notifications.signals import notify
 from plotly.offline import plot
 from guardian.shortcuts import get_objects_for_user,get_perms
 
@@ -53,7 +53,7 @@ def checklist_pesquisa(request):
         'modelos': modelos,
         'modelo_selected': modelo_selected,
         'page_obj':response, 
-        'notifications': user.notifications.unread()
+        # 'notifications': user.notifications.unread()
         }
     return render(request,'checklist_pesquisa_lv_preenchida.html', context)
 
@@ -84,7 +84,7 @@ def checklist_nova_selecao(request):
     args = {
         'filter': modelo_filter, 
         'page_obj':response, 
-        'notifications': user.notifications.unread()
+        # 'notifications': user.notifications.unread()
         }
     return render(
         request, 

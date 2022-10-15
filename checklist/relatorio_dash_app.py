@@ -14,14 +14,14 @@ app = DjangoDash('Relatorio', external_stylesheets=external_stylesheets)
 
 #df = pd.read_csv('https://git.io/Juf1t')
 query='SELECT * FROM public."ListaVerificacaoResultadoAnalise"'
-df = pd.read_sql_query(query, connection)
+df = pd.DataFrame() # pd.read_sql_query(query, connection)
 
 resultado_query='''
 SELECT resultado_analise."Resposta", resultado_analise."Modelo", COUNT(*) AS "Qde" 
 FROM public."ListaVerificacaoResultadoAnalise" AS resultado_analise
 GROUP BY resultado_analise."Resposta",resultado_analise."Modelo"
 '''
-resultado_df = pd.read_sql_query(resultado_query, connection)
+resultado_df =   pd.DataFrame() #pd.read_sql_query(resultado_query, connection)
 
 status_query= '''
  SELECT lista_analise."Status"
@@ -30,7 +30,7 @@ status_query= '''
  FROM public."ListaVerificacaoResultadoAnalise" lista_analise
  GROUP BY lista_analise."Modelo", lista_analise."Status"
 '''
-status_df = pd.read_sql_query(status_query, connection)
+status_df = pd.DataFrame() # pd.read_sql_query(status_query, connection)
 
 app.layout = html.Div([
     html.Div([

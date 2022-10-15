@@ -29,38 +29,6 @@
 </div>
 -->
 
-<!-- Nav Item - Alerts -->
-<div class="nav-item dropdown no-arrow mx-1">
-  <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fas fa-bell fa-fw"></i>
-    <!-- Counter - Alerts -->
-    <span class="badge badge-danger badge-counter"> {{ notifications|length }}  </span>
-  </a>
-  <!-- Dropdown - Alerts -->
-  <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-    <h6 class="dropdown-header">
-      Notificações
-    </h6>
-
-    {% for notification in  notifications %}
-    {% if notification.target %}
-    <a class="dropdown-item d-flex align-items-left" 
-      href="/checklist/{{notification.target_object_id}}">
-      <div>
-        <div>
-          <i class="fas fa-file-alt"></i>
-          <span class="small text-gray-500">{{ notification.actor }}</span>
-        </div>
-        <span class="font-weight-bold">{{ notification.description }}</span>
-      </div>
-    </a>
-    {% endif %}
-    {% endfor %}
-    
-    <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
-  </div>
-</div>
-
 
 
 <div class="topbar-divider d-none d-sm-block"></div>

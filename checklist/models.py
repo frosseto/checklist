@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from notifications.base.models import AbstractNotification
+# from notifications.base.models import AbstractNotification
 # from django.db.models.fields import related
 # from django.utils.timezone import now
 # from notifications.models import notify_handler

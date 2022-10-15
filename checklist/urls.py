@@ -10,8 +10,8 @@ from .views import (index,
                     listaverificacacaoViewSet,
                     modeloViewSet,)
 
-from .notification_app_views import (msg_index,
-                                     message)
+#from .notification_app_views import (msg_index,
+#                                     message)
 from .views_checklist import (checklist_nova,
                               checklist,
                               checklist_save,
@@ -28,7 +28,7 @@ router.register(r'listaverificacao/(?P<id>\d+)/?$', listaverificacacaoViewSet)
 router.register(r'item', itemViewSet)
 router.register(r'modelo', modeloViewSet)
 
-import notifications.urls
+#import notifications.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -48,13 +48,13 @@ urlpatterns = [
 
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
 
-    path('msg', msg_index, name='msg_index'),
-    path('message', message, name='message'),
+    #path('msg', msg_index, name='msg_index'),
+    #path('message', message, name='message'),
     
 
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    re_path('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+#    re_path('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 
 ]
 

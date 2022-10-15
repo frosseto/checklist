@@ -80,19 +80,19 @@ def has_group(user, group_name):
 
 def index(request):
     print(request.user)
-    notifications = None
-    if request.user:
-        users = User.objects.filter(username=request.user)
-        for user in users:
-            if user:
-                notifications = user.notifications.unread()
-                for notification in notifications:
-                    print(notification)
+    # notifications = None
+    # if request.user:
+    #     users = User.objects.filter(username=request.user)
+    #     for user in users:
+    #         if user:
+    #             notifications = user.notifications.unread()
+    #             for notification in notifications:
+    #                 print(notification)
 
     
     
 
     args = {
-        'notifications': notifications
+        # 'notifications': notifications
     }
     return render(request, 'index.html', args)
